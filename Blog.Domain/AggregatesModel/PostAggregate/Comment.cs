@@ -1,23 +1,23 @@
-﻿namespace Blog.Domain.AggregatesModel.PostAggregate;
+﻿using Blog.Domain.Core.Models;
 
-public class Comment
+namespace Blog.Domain.AggregatesModel.PostAggregate;
+
+public class Comment : Entity<int>
 {
-    public Comment(string content, Guid postId)
+    public Comment(string content, int postId)
     {
-        Id = Guid.NewGuid();
         Content = content;
         CreatedAt = DateTime.Now;
         UpdatedAt = null;
         PostId = postId;
     }
 
-    public Guid Id { get; private set; }
-    public Guid PostId { get; private set; }
+    public int PostId { get; private set; }
     public string Content { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
-    public void EditContent(string newContent)
+    public void Edit(string newContent)
     {
         if (string.IsNullOrWhiteSpace(newContent))
         {

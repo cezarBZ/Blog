@@ -1,12 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Blog.Domain.AggregatesModel.PostAggregate;
+using Blog.Domain.Core.Models;
+using System.Data;
 
-namespace Blog.Domain.AggregatesModel.UserAggregate
+namespace Blog.Domain.AggregatesModel.UserAggregate;
+
+public class User : Entity<int>, IAggregateRoot
 {
-    internal class User
+    public User(string username, string email, string passwordHash, bool active)
     {
+        Username = username;
+        Email = email;
+        PasswordHash = passwordHash;
+        CreatedAt = DateTime.UtcNow;
+        Active = active;
+    }
+
+    public string Username { get; private set; }
+    public string Email { get; private set; }
+    public string PasswordHash { get; private set; }
+    public bool Active { get; set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? LastLoginAt { get; private set; }
+
+    public void Update(string fullName, string email, string password)
+    {
+        Username = fullName;
+        Email = email;
+        PasswordHash = password;
+    }
+
+    public void Inactive(bool active)
+    {
+        Active = active;
+    }
+
+    public void RegisterLogin()
+    {
+        LastLoginAt = DateTime.UtcNow;
     }
 }

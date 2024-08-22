@@ -1,4 +1,4 @@
-﻿namespace MeuEccomerce.Domain.Core.Models;
+﻿namespace Blog.Domain.Core.Models;
 
 public abstract class Entity<TKey>
 {

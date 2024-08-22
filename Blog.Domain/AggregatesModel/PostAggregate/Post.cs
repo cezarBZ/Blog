@@ -1,31 +1,29 @@
-﻿namespace Blog.Domain.AggregatesModel.PostAggregate;
+﻿using Blog.Domain.Core.Models;
 
-public class Post : 
+namespace Blog.Domain.AggregatesModel.PostAggregate;
+
+public class Post : Entity<int>, IAggregateRoot
 {
     public Post(string title, string content)
     {
-        Id = Guid.NewGuid();
         Title = title;
         Content = content;
-        Updated = null;
+        UpdatedAt = null;
     }
 
-    public Guid Id { get; private set; }
     public string Title { get; private set; }
     public string Content { get; private set; }
-    public DateTime Created { get; private set; } = DateTime.Now;
-    public DateTime? Updated { get; private set; }
-    public List<Comment> Comments { get; private set; } = new List<Comment>();
-
-    public void AddComment(Comment comment)
+    public DateTime CreatedAt { get; private set; } = DateTime.Now;
+    public DateTime? UpdatedAt { get; private set; }
+    public void Edit(string newTitle, string newContent)
     {
-        Comments.Add(comment);
+        if (string.IsNullOrWhiteSpace(newContent))
+        {
+            throw new ArgumentException("O conteúdo do comentário não pode ser vazio.", nameof(newContent));
+        }
+
+        Content = newContent;
+        Title = newTitle;
+        UpdatedAt = DateTime.UtcNow;
     }
-
-    public void RemoveComment(Comment comment)
-    {
-        Comments.Remove(comment);
-    }
-
-
 }
