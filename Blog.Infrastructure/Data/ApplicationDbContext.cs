@@ -1,16 +1,15 @@
 ﻿using Blog.Domain.AggregatesModel.PostAggregate;
 using Blog.Domain.AggregatesModel.UserAggregate;
+using Blog.Domain.Core.Data;
 using Blog.Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-using System;
 using System.Reflection;
 
 
 namespace Blog.Infrastructure.Data;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : DbContext, IUnitOfWork
 {
     public const string DEFAULT_SCHEMA = "BLOG";
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
@@ -34,17 +33,8 @@ public class ApplicationDataContextDesignFactory : IDesignTimeDbContextFactory<A
 {
     public ApplicationDbContext CreateDbContext(string[] args)
     {
-        IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-        var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
-
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseSqlServer(connectionString);
+            .UseSqlServer("Server=localhost;Database=Blog;User Id=dev;Password=trabson;TrustServerCertificate=True;");
 
         return new ApplicationDbContext(optionsBuilder.Options);
     }
