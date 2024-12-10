@@ -29,6 +29,7 @@ builder.Services.AddMediatR(typeof(CreatePostCommand).Assembly);
 builder.Services.AddScoped<IFileStorageService, BlobStorageService>();
 builder.Services.Configure<AzureBlobStorageOptions>(
     builder.Configuration.GetSection("AzureBlobStorage"));
+builder.WebHost.UseUrls("https://*:80");
 
 var app = builder.Build();
 
