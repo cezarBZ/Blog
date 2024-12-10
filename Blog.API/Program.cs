@@ -1,3 +1,4 @@
+using Blog.Infrastructure.Services.BlobStorage;
 using Blog.Application.Commands.CreatePost;
 using Blog.Domain.AggregatesModel.PostAggregate;
 using Blog.Domain.AggregatesModel.UserAggregate;
@@ -25,6 +26,9 @@ builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 //builder.Services.AddMediatR(cfg => Assembly.GetExecutingAssembly());
 builder.Services.AddMediatR(typeof(CreatePostCommand).Assembly);
+builder.Services.AddScoped<IFileStorageService, BlobStorageService>();
+builder.Services.Configure<AzureBlobStorageOptions>(
+    builder.Configuration.GetSection("AzureBlobStorage"));
 
 var app = builder.Build();
 
@@ -34,7 +38,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
