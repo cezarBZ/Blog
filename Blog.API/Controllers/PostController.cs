@@ -17,10 +17,16 @@ public class PostController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] CreatePostCommand command)
+    public async Task<IActionResult> Add([FromForm] CreatePostCommand command)
     {
 
         var cmd = await _mediator.Send(command);
-        return Ok(cmd);
+
+        if (cmd.Success)
+        {
+
+            return Ok(cmd);
+        }
+        return BadRequest(cmd);
     }
 }

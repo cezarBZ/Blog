@@ -4,10 +4,11 @@ namespace Blog.Domain.AggregatesModel.PostAggregate;
 
 public class Post : Entity<int>, IAggregateRoot
 {
-    public Post(string title, string content)
+    public Post(string title, string content, string coverImageUrl)
     {
         Title = title;
         Content = content;
+        CoverImageUrl = coverImageUrl;
         UpdatedAt = null;
     }
 
@@ -15,6 +16,7 @@ public class Post : Entity<int>, IAggregateRoot
     public string Content { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.Now;
     public DateTime? UpdatedAt { get; private set; }
+    public string CoverImageUrl { get; private set; }
     public void Edit(string newTitle, string newContent)
     {
         if (string.IsNullOrWhiteSpace(newContent))
