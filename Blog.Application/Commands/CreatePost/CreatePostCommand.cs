@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Blog.Application.Commands.CreatePost
 {
-    public class CreatePostCommand : IRequest<CreatePostResponse>
+    public class CreatePostCommand : IRequest<Response<int>>
     {
         public CreatePostCommand() { }
         public CreatePostCommand(string title, string content, IFormFile coverImage)

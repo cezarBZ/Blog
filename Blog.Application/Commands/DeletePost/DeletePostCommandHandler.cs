@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Blog.Application.Commands.DeletePost
 {
-    public class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, Response>
+    public class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, Response<Unit>>
     {
         private readonly IPostRepository repository;
 
@@ -14,20 +14,19 @@ namespace Blog.Application.Commands.DeletePost
             repository = _repository;
         }
 
-        public async Task<Response> Handle(DeletePostCommand request, CancellationToken cancellationToken)
+        public async Task<Response<Unit>> Handle(DeletePostCommand request, CancellationToken cancellationToken)
         {
             var post = await repository.GetByIdAsync(request.PostId);
 
             if (post == null)
             {
-                var errorResponse = new Response { Success = false, Message = "Post not found" };
-                return errorResponse;
+                return Response<Unit>.NotFound();
             }
 
             repository.Delete(post);
             await repository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-            var response = new Response { Success = true, Message = "Post deleted succesfuly" };
+            var response = Response<Unit>.Success(Unit.Value, "Post deleted succesfuly");
 
             return response;
         }

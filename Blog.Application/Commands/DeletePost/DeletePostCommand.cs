@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Blog.Application.Commands.DeletePost
 {
-    public class DeletePostCommand : IRequest<Response>
+    public class DeletePostCommand : IRequest<Response<Unit>>
     {
         public DeletePostCommand(int postId)
         {
