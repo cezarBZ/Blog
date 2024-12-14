@@ -47,8 +47,6 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Creat
                 Success = false,
                 Message = $"Error creating post: {error.Message}"
             };
-            Console.WriteLine(error.InnerException);
-            Console.WriteLine(error);
 
             return response;
         }
