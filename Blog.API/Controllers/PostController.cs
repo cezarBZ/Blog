@@ -32,6 +32,20 @@ public class PostController : ControllerBase
         return Ok(cmd);
     }
 
+    [HttpGet]
+    [Route("{Id:int}")]
+    public async Task<IActionResult> GetById(int Id)
+    {
+        var post = await _mediator.Send(new GetPostByIdQuery(Id));
+
+        if (!post.IsFound)
+        {
+            return NotFound();
+        }
+
+        return Ok(post);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Add([FromForm] CreatePostCommand command)
     {
