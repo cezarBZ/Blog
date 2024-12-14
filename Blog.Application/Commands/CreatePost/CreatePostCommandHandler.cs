@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Blog.Application.Commands.CreatePost;
 
-public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, CreatePostResponse>
+public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Response<int>>
 {
     private readonly IPostRepository repository;
     private readonly IFileStorageService fileStorageService;
@@ -15,7 +15,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Creat
         fileStorageService = _fileStorageService;
 
     }
-    public async Task<CreatePostResponse> Handle(CreatePostCommand request, CancellationToken cancellationToken)
+    public async Task<Response<int>> Handle(CreatePostCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -30,25 +30,12 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Creat
             repository.Add(newPost);
             var result = repository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-            var response = new CreatePostResponse
-            {
-                Success = true,
-                Message = "Post created successfuly",
-
-                id = newPost.Id
-            };
-            return response;
+            return Response<int>.Success(newPost.Id, "Post created successfuly");
         }
         catch (Exception error)
         {
 
-            var response = new CreatePostResponse
-            {
-                Success = false,
-                Message = $"Error creating post: {error.Message}"
-            };
-
-            return response;
+            return Response<int>.Failure($"Error creating post: {error.Message}");
         }
 
     }

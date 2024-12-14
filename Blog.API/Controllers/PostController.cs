@@ -1,9 +1,9 @@
 ﻿using Blog.Application.Commands.CreatePost;
 using Blog.Application.Commands.DeletePost;
-using Blog.Application.Queries;
+using Blog.Application.Queries.GetAllPosts;
+using Blog.Application.Queries.GetPostById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Validations;
 
 namespace Blog.API.Controllers;
 
@@ -24,6 +24,11 @@ public class PostController : ControllerBase
 
         var cmd = await _mediator.Send(new GetAllPostsQuery());
 
+        if (!cmd.IsFound)
+        {
+            return NotFound();
+        }
+
         return Ok(cmd);
     }
 
@@ -33,25 +38,27 @@ public class PostController : ControllerBase
 
         var cmd = await _mediator.Send(command);
 
-        if (cmd.Success)
+        if (!cmd.IsSuccess)
         {
 
-            return Ok(cmd);
+            return BadRequest(cmd);
         }
-        return BadRequest(cmd);
+
+        return Ok(cmd);
     }
 
     [HttpDelete]
-    public async Task<IActionResult> Delete([FromBody] DeletePostCommand command)
+    [Route("{Id:int}")]
+    public async Task<IActionResult> Delete(int Id)
     {
 
-        var cmd = await _mediator.Send(command);
+        var cmd = await _mediator.Send(new DeletePostCommand(Id));
 
-        if (cmd.Success)
+        if (!cmd.IsSuccess)
         {
 
-            return Ok(cmd);
+            return NotFound(cmd);
         }
-        return BadRequest(cmd);
+        return Ok(cmd);
     }
 }
