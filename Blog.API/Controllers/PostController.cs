@@ -1,5 +1,6 @@
 ﻿using Blog.Application.Commands.CreatePost;
 using Blog.Application.Commands.DeletePost;
+using Blog.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Validations;
@@ -15,6 +16,15 @@ public class PostController : ControllerBase
     public PostController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+
+        var cmd = await _mediator.Send(new GetAllPostsQuery());
+
+        return Ok(cmd);
     }
 
     [HttpPost]
