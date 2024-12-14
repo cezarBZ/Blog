@@ -1,4 +1,5 @@
 ﻿using Blog.Application.Commands.CreatePost;
+using Blog.Application.Commands.DeletePost;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Validations;
@@ -18,6 +19,20 @@ public class PostController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Add([FromForm] CreatePostCommand command)
+    {
+
+        var cmd = await _mediator.Send(command);
+
+        if (cmd.Success)
+        {
+
+            return Ok(cmd);
+        }
+        return BadRequest(cmd);
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> Delete([FromBody] DeletePostCommand command)
     {
 
         var cmd = await _mediator.Send(command);
