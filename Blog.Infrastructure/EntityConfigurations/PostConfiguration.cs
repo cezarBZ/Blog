@@ -32,6 +32,9 @@ namespace Blog.Infrastructure.EntityConfigurations
                 .HasColumnType("datetime")
                 .IsRequired(false);
 
+            builder.Property(p => p.CoverImageUrl)
+                .HasColumnType("nvarchar(max)");
+
         }
     }
 }
