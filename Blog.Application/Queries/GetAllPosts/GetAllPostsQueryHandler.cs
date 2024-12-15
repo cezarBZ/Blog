@@ -22,7 +22,7 @@ namespace Blog.Application.Queries.GetAllPosts
                 return Response<IReadOnlyList<PostViewModel>>.NotFound("No posts found");
             }
 
-            var result = posts.Select(p => new PostViewModel(p.Title, p.Content, p.CoverImageUrl, p.CreatedAt, p.UpdatedAt)).ToList();
+            var result = posts.Select(p => new PostViewModel { Title = p.Title, Content = p.Content, CoverImageUrl = p.CoverImageUrl, CreatedAt = p.CreatedAt, UpdatedAt = p.UpdatedAt }).ToList();
 
             return Response<IReadOnlyList<PostViewModel>>.Success(result);
         }

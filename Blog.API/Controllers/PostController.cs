@@ -1,5 +1,6 @@
 ﻿using Blog.Application.Commands.CreatePost;
 using Blog.Application.Commands.DeletePost;
+using Blog.Application.Commands.UpdatePost;
 using Blog.Application.Queries.GetAllPosts;
 using Blog.Application.Queries.GetPostById;
 using MediatR;
@@ -50,6 +51,21 @@ public class PostController : ControllerBase
     public async Task<IActionResult> Add([FromForm] CreatePostCommand command)
     {
 
+        var cmd = await _mediator.Send(command);
+
+        if (!cmd.IsSuccess)
+        {
+
+            return BadRequest(cmd);
+        }
+
+        return Ok(cmd);
+    }
+
+    [HttpPut("{Id:int}")]
+    public async Task<IActionResult> Update(int Id, [FromForm] UpdatePostCommand command)
+    {
+        command.Id = Id;
         var cmd = await _mediator.Send(command);
 
         if (!cmd.IsSuccess)

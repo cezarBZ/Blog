@@ -22,7 +22,7 @@ namespace Blog.Application.Queries.GetPostById
             {
                 return Response<PostViewModel>.NotFound("Post not found");
             }
-            var postViewModel = new PostViewModel(post.Title, post.Content, post.CoverImageUrl, post.CreatedAt, post.UpdatedAt);
+            var postViewModel = new PostViewModel { Title = post.Title, Content = post.Content, CoverImageUrl = post.CoverImageUrl, CreatedAt = post.CreatedAt, UpdatedAt = post.UpdatedAt };
 
             return Response<PostViewModel>.Success(postViewModel);
         }
