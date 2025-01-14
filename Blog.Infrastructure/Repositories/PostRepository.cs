@@ -1,5 +1,6 @@
 ﻿using Blog.Domain.AggregatesModel.PostAggregate;
 using Blog.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Infrastructure.Repositories
 {
@@ -14,6 +15,14 @@ namespace Blog.Infrastructure.Repositories
         {
             await _dbContext.Comments.AddAsync(comment);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public override async Task<Post> GetByIdAsync(int id)
+        {
+            return await _dbContext.Posts
+                .Include(p => p.Comments) // Inclui os comentários
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
     }

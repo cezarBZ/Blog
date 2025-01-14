@@ -17,12 +17,14 @@ namespace Blog.Application.Queries.GetPostById
         {
             var post = await repository.GetByIdAsync(request.Id);
 
-
             if (post == null)
             {
                 return Response<PostViewModel>.NotFound("Post not found");
             }
-            var postViewModel = new PostViewModel { Title = post.Title, Content = post.Content, CoverImageUrl = post.CoverImageUrl, CreatedAt = post.CreatedAt, UpdatedAt = post.UpdatedAt };
+
+            var comments = post.Comments.Select(c => new CommentViewModel { Id = c.Id, Content = c.Content, CreatedAt = c.CreatedAt, UpdatedAt = c.UpdatedAt, UserId = c.UserId }).ToList();
+
+            var postViewModel = new PostViewModel { Id = post.Id, Title = post.Title, Content = post.Content, CoverImageUrl = post.CoverImageUrl, CreatedAt = post.CreatedAt, UpdatedAt = post.UpdatedAt, Comments = comments };
 
             return Response<PostViewModel>.Success(postViewModel);
         }

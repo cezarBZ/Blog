@@ -2,6 +2,7 @@
 using Blog.Application.ViewModels;
 using Blog.Domain.AggregatesModel.PostAggregate;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Blog.Application.Queries.GetAllPosts
@@ -22,7 +23,7 @@ namespace Blog.Application.Queries.GetAllPosts
                 return Response<IReadOnlyList<PostViewModel>>.NotFound("No posts found");
             }
 
-            var result = posts.Select(p => new PostViewModel { Title = p.Title, Content = p.Content, CoverImageUrl = p.CoverImageUrl, CreatedAt = p.CreatedAt, UpdatedAt = p.UpdatedAt }).ToList();
+            var result = posts.Select(p => new PostViewModel { Id = p.Id, Title = p.Title, Content = p.Content, CoverImageUrl = p.CoverImageUrl, CreatedAt = p.CreatedAt, UpdatedAt = p.UpdatedAt }).ToList();
 
             return Response<IReadOnlyList<PostViewModel>>.Success(result);
         }
