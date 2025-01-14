@@ -10,6 +10,7 @@ public class Post : Entity<int>, IAggregateRoot
         Content = content;
         CoverImageUrl = coverImageUrl;
         UpdatedAt = null;
+        Comments = new List<Comment>();
     }
 
     public string Title { get; private set; }
@@ -17,6 +18,7 @@ public class Post : Entity<int>, IAggregateRoot
     public DateTime CreatedAt { get; private set; } = DateTime.Now;
     public DateTime? UpdatedAt { get; private set; }
     public string CoverImageUrl { get; private set; }
+    public List<Comment> Comments { get; private set; }
     public void Edit(string newTitle, string newContent, string newCoverImageUrl)
     {
         if (string.IsNullOrWhiteSpace(newTitle))
