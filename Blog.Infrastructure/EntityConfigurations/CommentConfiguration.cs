@@ -31,8 +31,8 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .HasColumnType("datetime")
             .IsRequired(false);
 
-        builder.HasOne<Post>()
-            .WithMany()
+        builder.HasOne(p => p.Post)
+            .WithMany(c => c.Comments)
             .HasForeignKey(c => c.PostId)
             .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("FK_Comment_Post");

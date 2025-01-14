@@ -1,4 +1,5 @@
-﻿using Blog.Application.Commands.CreatePost;
+﻿using Blog.Application.Commands.CreateComment;
+using Blog.Application.Commands.CreatePost;
 using Blog.Application.Commands.DeletePost;
 using Blog.Application.Commands.UpdatePost;
 using Blog.Application.Queries.GetAllPosts;
@@ -90,5 +91,14 @@ public class PostController : ControllerBase
             return NotFound(cmd);
         }
         return Ok(cmd);
+    }
+
+    [HttpPost("{id}/comments")]
+    public async Task<IActionResult> PostComment(int id, [FromBody] CreateCommentCommand command)
+    {
+        command.IdPost = id;
+        await _mediator.Send(command);
+
+        return NoContent();
     }
 }

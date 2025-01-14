@@ -5,7 +5,16 @@ namespace Blog.Infrastructure.Repositories
 {
     public class PostRepository : Repository<Post, int>, IPostRepository
     {
-        public PostRepository(ApplicationDbContext context) : base(context) { }
+        private readonly ApplicationDbContext _dbContext;
+        public PostRepository(ApplicationDbContext context) : base(context)
+        {
+            _dbContext = context;
+        }
+        public async Task AddCommentAsync(Comment comment)
+        {
+            await _dbContext.Comments.AddAsync(comment);
+            await _dbContext.SaveChangesAsync();
+        }
 
     }
 }
