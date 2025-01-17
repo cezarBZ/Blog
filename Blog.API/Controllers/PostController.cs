@@ -5,6 +5,7 @@ using Blog.Application.Commands.UpdatePost;
 using Blog.Application.Queries.GetAllPosts;
 using Blog.Application.Queries.GetPostById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Controllers;
@@ -21,6 +22,7 @@ public class PostController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetAll()
     {
 

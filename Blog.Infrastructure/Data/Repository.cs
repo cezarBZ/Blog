@@ -1,4 +1,5 @@
-﻿using Blog.Domain.Core.Data;
+﻿using Blog.Domain.AggregatesModel.UserAggregate;
+using Blog.Domain.Core.Data;
 using Blog.Domain.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -49,6 +50,12 @@ namespace Blog.Infrastructure.Data
         {
             _context.Set<T>().Add(entity);
             _context.SaveChanges();
+        }
+
+        public async Task AddAsync(T entity)
+        {
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
         public void Update(T entity)
