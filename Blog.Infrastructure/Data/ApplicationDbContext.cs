@@ -19,6 +19,8 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     public DbSet<User> Users { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<Like> Likes { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,6 +28,7 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
         modelBuilder.ApplyConfiguration(new PostConfiguration());
         modelBuilder.ApplyConfiguration(new CommentConfiguration());
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new LikeConfiguration());
         base.OnModelCreating(modelBuilder);
     }
 }
@@ -34,7 +37,7 @@ public class ApplicationDataContextDesignFactory : IDesignTimeDbContextFactory<A
     public ApplicationDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseSqlServer();
+            .UseSqlServer("Server=tcp:meu-sql-server.database.windows.net,1433;Initial Catalog=blog;Persist Security Info=False;User ID=celzaAdm;Password=React@152230;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
         return new ApplicationDbContext(optionsBuilder.Options);
     }
