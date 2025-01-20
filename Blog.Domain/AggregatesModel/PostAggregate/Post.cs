@@ -5,14 +5,15 @@ namespace Blog.Domain.AggregatesModel.PostAggregate;
 
 public class Post : Entity<int>, IAggregateRoot
 {
-    public Post(string title, string content, string coverImageUrl, int userId)
+    public Post(string title, string content, string coverImageUrl, int createdBy)
     {
         Title = title;
         Content = content;
         CoverImageUrl = coverImageUrl;
         UpdatedAt = null;
         Comments = new List<Comment>();
-        UserId = userId;
+        CreatedBy = createdBy;
+        LikeCount = 0;
     }
 
     public string Title { get; private set; }
@@ -22,8 +23,8 @@ public class Post : Entity<int>, IAggregateRoot
     public string CoverImageUrl { get; private set; }
     public List<Comment> Comments { get; private set; }
     public ICollection<Like> Likes { get; set; } = new List<Like>();
-    public int UserId { get; private set; }
-    public User User { get; private set; }
+    public int LikeCount { get; private set; }
+    public int CreatedBy { get; private set; }
     public void Edit(string newTitle, string newContent, string newCoverImageUrl)
     {
         if (string.IsNullOrWhiteSpace(newTitle))
@@ -40,5 +41,11 @@ public class Post : Entity<int>, IAggregateRoot
         Title = newTitle;
         CoverImageUrl = newCoverImageUrl ?? CoverImageUrl;
         UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void AddLike(Like like)
+    {
+        Likes.Add(like);
+        LikeCount++;
     }
 }
