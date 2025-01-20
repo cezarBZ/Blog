@@ -11,9 +11,16 @@ namespace Blog.Infrastructure.Repositories
         {
             _dbContext = context;
         }
+
         public async Task AddCommentAsync(Comment comment)
         {
             await _dbContext.Comments.AddAsync(comment);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task AddLikeAsync(Like like)
+        {
+            await _dbContext.Likes.AddAsync(like);
             await _dbContext.SaveChangesAsync();
         }
 
@@ -23,6 +30,13 @@ namespace Blog.Infrastructure.Repositories
                 .Include(p => p.Comments) // Inclui os comentários
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<Like> GetLikeByUserIdAndPostIdAsync(int userId, int postId)
+        {
+            return await _dbContext.Likes
+                .Where(l => l.UserId == userId && l.PostId == postId)
+                .FirstOrDefaultAsync();
         }
 
     }

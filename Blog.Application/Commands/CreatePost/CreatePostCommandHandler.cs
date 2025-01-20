@@ -2,6 +2,7 @@
 using Blog.Domain.AggregatesModel.PostAggregate;
 using Blog.Infrastructure.Services.BlobStorage;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Blog.Application.Commands.CreatePost;
 
@@ -9,10 +10,13 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Respo
 {
     private readonly IPostRepository repository;
     private readonly IFileStorageService fileStorageService;
-    public CreatePostCommandHandler(IPostRepository _repository, IFileStorageService _fileStorageService)
+    private readonly IHttpContextAccessor httpContextAccessor;
+
+    public CreatePostCommandHandler(IPostRepository _repository, IFileStorageService _fileStorageService, IHttpContextAccessor _httpContextAccessor)
     {
         repository = _repository;
         fileStorageService = _fileStorageService;
+        httpContextAccessor = _httpContextAccessor;
 
     }
     public async Task<Response<int>> Handle(CreatePostCommand request, CancellationToken cancellationToken)
@@ -25,8 +29,11 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Respo
                 var fileName = $"{Guid.NewGuid()}{Path.GetExtension(request.CoverImage.FileName)}";
                 coverImageUrl = await fileStorageService.UploadFileAsync(request.CoverImage, fileName);
             }
+            var userIdClaim = httpContextAccessor.HttpContext.User.Claims
+                                    .FirstOrDefault(c => c.Type == "userId");
+            int userId = int.Parse(userIdClaim.Value);
 
-            var newPost = new Post(request.Title, request.Content, coverImageUrl);
+            var newPost = new Post(request.Title, request.Content, coverImageUrl, userId);
             repository.Add(newPost);
             var result = repository.UnitOfWork.SaveChangesAsync(cancellationToken);
 

@@ -1,11 +1,9 @@
 using Blog.Infrastructure.Services.BlobStorage;
-using Blog.Application.Commands.CreatePost;
 using Blog.Domain.AggregatesModel.PostAggregate;
 using Blog.Domain.AggregatesModel.UserAggregate;
 using Blog.Domain.Core.Data;
 using Blog.Infrastructure.Data;
 using Blog.Infrastructure.Repositories;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Blog.Domain.Core.Auth;
 using Blog.Infrastructure.Auth;
@@ -13,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Blog.API.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,8 +29,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-//builder.Services.AddMediatR(cfg => Assembly.GetExecutingAssembly());
-builder.Services.AddMediatR(typeof(CreatePostCommand).Assembly);
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<IFileStorageService, BlobStorageService>();
 builder.Services.Configure<AzureBlobStorageOptions>(
     builder.Configuration.GetSection("AzureBlobStorage"));

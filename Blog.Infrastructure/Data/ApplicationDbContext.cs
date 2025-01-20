@@ -19,6 +19,8 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     public DbSet<User> Users { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<Like> Likes { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,6 +28,7 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
         modelBuilder.ApplyConfiguration(new PostConfiguration());
         modelBuilder.ApplyConfiguration(new CommentConfiguration());
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new LikeConfiguration());
         base.OnModelCreating(modelBuilder);
     }
 }

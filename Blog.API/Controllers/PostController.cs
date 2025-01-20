@@ -1,6 +1,7 @@
 ﻿using Blog.Application.Commands.CreateComment;
 using Blog.Application.Commands.CreatePost;
 using Blog.Application.Commands.DeletePost;
+using Blog.Application.Commands.LikePost;
 using Blog.Application.Commands.UpdatePost;
 using Blog.Application.Queries.GetAllPosts;
 using Blog.Application.Queries.GetPostById;
@@ -102,5 +103,18 @@ public class PostController : ControllerBase
         await _mediator.Send(command);
 
         return NoContent();
+    }
+
+    [HttpPost("{id}/like")]
+    public async Task<IActionResult> Like(int id)
+    {
+        var command = new LikePostCommand { postId = id };
+        var response = await _mediator.Send(command);
+
+        if (!response.IsSuccess)
+        {
+            return BadRequest(response);
+        }
+        return Ok(response);
     }
 }
