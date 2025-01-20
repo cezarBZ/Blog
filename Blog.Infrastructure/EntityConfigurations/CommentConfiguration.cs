@@ -1,6 +1,4 @@
-﻿
-
-using Blog.Domain.AggregatesModel.PostAggregate;
+﻿using Blog.Domain.AggregatesModel.PostAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,8 +18,7 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
 
         builder.Property(p => p.Content)
             .IsRequired()
-            .HasColumnType("nvarchar(1000)")
-            .HasMaxLength(50);
+            .HasColumnType("NVARCHAR(MAX)");
 
         builder.Property(p => p.CreatedAt)
             .IsRequired()
@@ -36,6 +33,12 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .HasForeignKey(c => c.PostId)
             .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("FK_Comment_Post");
+
+        builder.HasOne(p => p.User)
+            .WithMany()
+            .HasForeignKey(c => c.UserId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .HasConstraintName("FK_Comment_User");
 
     }
 }

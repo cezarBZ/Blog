@@ -23,6 +23,11 @@ public class User : Entity<int>, IAggregateRoot
     public string Role { get; set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? LastLoginAt { get; private set; }
+    public ICollection<Like> Likes { get; set; } = new List<Like>();
+    public ICollection<Post> Posts { get; set; } = new List<Post>();
+    public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
+
 
     public void Update(string fullName, string email, string password)
     {
