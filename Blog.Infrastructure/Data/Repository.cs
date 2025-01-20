@@ -49,25 +49,21 @@ namespace Blog.Infrastructure.Data
         public void Add(T entity)
         {
             _context.Set<T>().Add(entity);
-            _context.SaveChanges();
         }
 
         public async Task AddAsync(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
-            await _context.SaveChangesAsync();
         }
 
         public void Update(T entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
-            _context.SaveChanges();
         }
 
         public void Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-            _context.SaveChanges();
         }
         public void Dispose()
         {

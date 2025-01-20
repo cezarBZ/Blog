@@ -17,9 +17,8 @@ public class UserRepository : Repository<User, int>, IUserRepository
         return await _dbContext.Users.SingleOrDefaultAsync(u => u.Email == email && u.PasswordHash == passwordHash);
     }
 
-    public async Task UpdateLastLogin(User user)
+    public void UpdateLastLogin(User user)
     {
         user.RegisterLogin();
-        await _dbContext.SaveChangesAsync();
     }
 }

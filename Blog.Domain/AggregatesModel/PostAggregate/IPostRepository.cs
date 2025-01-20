@@ -6,6 +6,6 @@ public interface IPostRepository : IRepository<Post, int>
 {
     Task AddCommentAsync(Comment comment);
     Task AddLikeAsync(Like like);
-
     Task<Like> GetLikeByUserIdAndPostIdAsync(int userId, int postId);
+    void EditCommentAsync(Comment comment);
 }

@@ -22,7 +22,7 @@ namespace Blog.Application.Commands.LoginUser
             if (user == null)
                 return null;
 
-            await _userRepository.UpdateLastLogin(user);
+            _userRepository.UpdateLastLogin(user);
 
             var token = _authService.GenerateJwtToken(user.Email, user.Role, user.Id);
             return new LoginUserViewModel(user.Email, token);

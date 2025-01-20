@@ -15,13 +15,16 @@ namespace Blog.Infrastructure.Repositories
         public async Task AddCommentAsync(Comment comment)
         {
             await _dbContext.Comments.AddAsync(comment);
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task AddLikeAsync(Like like)
         {
             await _dbContext.Likes.AddAsync(like);
-            await _dbContext.SaveChangesAsync();
+        }
+
+        public void EditCommentAsync(Comment comment)
+        {
+            _dbContext.Comments.Update(comment);
         }
 
         public override async Task<Post> GetByIdAsync(int id)
