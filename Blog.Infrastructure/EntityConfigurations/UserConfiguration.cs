@@ -38,6 +38,18 @@ namespace Blog.Infrastructure.EntityConfigurations
 
             builder.HasIndex(u => u.Username)
                    .IsUnique();
+
+            builder.HasMany(u => u.Comments)
+                .WithOne(c => c.User)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("FK_User_Comments");
+
+            builder.HasMany(u => u.Likes)
+                .WithOne(l => l.User)
+                .HasForeignKey(l => l.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_User_Likes");
         }
     }
 }

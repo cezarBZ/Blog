@@ -34,7 +34,7 @@ public class ApplicationDataContextDesignFactory : IDesignTimeDbContextFactory<A
     public ApplicationDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseSqlServer();
+            .UseSqlServer("Server=tcp:meu-sql-server.database.windows.net,1433;Initial Catalog=blog;Persist Security Info=False;User ID=celzaAdm;Password=React@152230;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
         return new ApplicationDbContext(optionsBuilder.Options);
     }
