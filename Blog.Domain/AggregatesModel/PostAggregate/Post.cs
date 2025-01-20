@@ -1,16 +1,18 @@
-﻿using Blog.Domain.Core.Models;
+﻿using Blog.Domain.AggregatesModel.UserAggregate;
+using Blog.Domain.Core.Models;
 
 namespace Blog.Domain.AggregatesModel.PostAggregate;
 
 public class Post : Entity<int>, IAggregateRoot
 {
-    public Post(string title, string content, string coverImageUrl)
+    public Post(string title, string content, string coverImageUrl, int userId)
     {
         Title = title;
         Content = content;
         CoverImageUrl = coverImageUrl;
         UpdatedAt = null;
         Comments = new List<Comment>();
+        UserId = userId;
     }
 
     public string Title { get; private set; }
@@ -19,6 +21,9 @@ public class Post : Entity<int>, IAggregateRoot
     public DateTime? UpdatedAt { get; private set; }
     public string CoverImageUrl { get; private set; }
     public List<Comment> Comments { get; private set; }
+    public ICollection<Like> Likes { get; set; } = new List<Like>();
+    public int UserId { get; private set; }
+    public User User { get; private set; }
     public void Edit(string newTitle, string newContent, string newCoverImageUrl)
     {
         if (string.IsNullOrWhiteSpace(newTitle))

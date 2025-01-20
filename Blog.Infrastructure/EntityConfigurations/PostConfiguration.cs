@@ -35,6 +35,12 @@ namespace Blog.Infrastructure.EntityConfigurations
             builder.Property(p => p.CoverImageUrl)
                 .HasColumnType("nvarchar(max)");
 
+            builder.HasOne(p => p.User)
+            .WithMany(c => c.Posts)
+            .HasForeignKey(c => c.UserId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .HasConstraintName("FK_Post_User");
+
         }
     }
 }
