@@ -30,7 +30,7 @@ namespace Blog.Infrastructure.Repositories
         public override async Task<Post> GetByIdAsync(int id)
         {
             return await _dbContext.Posts
-                .Include(p => p.Comments) // Inclui os comentários
+                .Include(p => p.Comments)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
