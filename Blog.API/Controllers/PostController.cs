@@ -100,7 +100,7 @@ public class PostController : ControllerBase
     [HttpPost("{id}/comments")]
     public async Task<IActionResult> PostComment(int id, [FromBody] CreateCommentCommand command)
     {
-        command.IdPost = id;
+        command.postId = id;
         await _mediator.Send(command);
 
         return NoContent();

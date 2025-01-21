@@ -1,5 +1,7 @@
 ﻿using Blog.Application.Responses;
+using Blog.Application.Services;
 using Blog.Domain.AggregatesModel.PostAggregate;
+using Blog.Domain.AggregatesModel.UserAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
@@ -8,17 +10,15 @@ namespace Blog.Application.Commands.UpdateComment
     public class UpdateCommentCommandHandler : IRequestHandler<UpdateCommentCommand, Response<Unit>>
     {
         private readonly IPostRepository _postRepository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public UpdateCommentCommandHandler(IPostRepository postRepository, IHttpContextAccessor httpContextAccessor)
+        private readonly IUserContextService _userContextService;
+        public UpdateCommentCommandHandler(IPostRepository postRepository, IUserContextService userContextService)
         {
             _postRepository = postRepository;
-            _httpContextAccessor = httpContextAccessor;
+            _userContextService = userContextService;
         }
         public async Task<Response<Unit>> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
         {
-            var userIdClaim = _httpContextAccessor.HttpContext.User.Claims
-                                                .FirstOrDefault(c => c.Type == "userId");
-            int userId = int.Parse(userIdClaim.Value);
+            User user = await _userContextService.GetUserAsync();
 
             var post = await _postRepository.GetByIdAsync(request.PostId);
 
@@ -30,7 +30,7 @@ namespace Blog.Application.Commands.UpdateComment
             if (comment == null)
                 return Response<Unit>.NotFound("Comentário não encontrado");
 
-            if (comment.UserId != userId)
+            if (comment.UserId != user.Id)
                 return Response<Unit>.Failure("VocÊ não pode editar um comentário de outro usuário");
 
 
