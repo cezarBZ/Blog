@@ -1,4 +1,5 @@
 ﻿using Blog.Application.Responses;
+using Blog.Application.Services;
 using Blog.Domain.AggregatesModel.PostAggregate;
 using Blog.Infrastructure.Services.BlobStorage;
 using MediatR;
@@ -10,14 +11,13 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Respo
 {
     private readonly IPostRepository repository;
     private readonly IFileStorageService fileStorageService;
-    private readonly IHttpContextAccessor httpContextAccessor;
+    private readonly IUserContextService userContextService;
 
-    public CreatePostCommandHandler(IPostRepository _repository, IFileStorageService _fileStorageService, IHttpContextAccessor _httpContextAccessor)
+    public CreatePostCommandHandler(IPostRepository _repository, IFileStorageService _fileStorageService, IUserContextService _userContextService)
     {
         repository = _repository;
         fileStorageService = _fileStorageService;
-        httpContextAccessor = _httpContextAccessor;
-
+        userContextService = _userContextService;
     }
     public async Task<Response<int>> Handle(CreatePostCommand request, CancellationToken cancellationToken)
     {
@@ -29,11 +29,10 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Respo
                 var fileName = $"{Guid.NewGuid()}{Path.GetExtension(request.CoverImage.FileName)}";
                 coverImageUrl = await fileStorageService.UploadFileAsync(request.CoverImage, fileName);
             }
-            var userIdClaim = httpContextAccessor.HttpContext.User.Claims
-                                    .FirstOrDefault(c => c.Type == "userId");
-            int userId = int.Parse(userIdClaim.Value);
 
-            var newPost = new Post(request.Title, request.Content, coverImageUrl, userId);
+            var userId = userContextService.GetUserId();
+
+            var newPost = new Post(request.Title, request.Content, coverImageUrl, userId.Value);
             repository.Add(newPost);
             var result = repository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
