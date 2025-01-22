@@ -42,5 +42,9 @@ namespace Blog.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
+        public void DeleteComment(Comment comment)
+        {
+             _dbContext.Comments.Remove(comment);
+        }
     }
 }

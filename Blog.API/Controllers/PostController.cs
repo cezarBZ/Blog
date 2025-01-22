@@ -1,5 +1,6 @@
 ﻿using Blog.Application.Commands.CreateComment;
 using Blog.Application.Commands.CreatePost;
+using Blog.Application.Commands.DeleteComment;
 using Blog.Application.Commands.DeletePost;
 using Blog.Application.Commands.LikePost;
 using Blog.Application.Commands.UpdateComment;
@@ -118,6 +119,19 @@ public class PostController : ControllerBase
             return BadRequest(response.Message);
 
         return Ok(response.Message);
+    }
+
+    [HttpDelete("{postId}/comments/{commentId}")]
+    public async Task<IActionResult> DeleteComment(int postId, int commentId)
+    {
+        var command = new DeleteCommentCommand { CommentId = commentId, PostId = postId };
+        var response = await _mediator.Send(command);
+
+        if (!response.IsSuccess)
+        {
+            return BadRequest(response);
+        }
+        return Ok(response);
     }
 
     [HttpPost("{id}/like")]
