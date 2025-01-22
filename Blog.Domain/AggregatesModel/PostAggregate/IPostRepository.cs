@@ -1,13 +1,10 @@
-﻿using Blog.Domain.Core.Data;
-
+﻿using Blog.Domain.AggregatesModel.CommentAggregate;
+using Blog.Domain.AggregatesModel.LikeAggregate;
+using Blog.Domain.Core.Data;
 namespace Blog.Domain.AggregatesModel.PostAggregate;
 
 public interface IPostRepository : IRepository<Post, int>
 {
-    Task AddCommentAsync(Comment comment);
     Task AddLikeAsync(Like like);
     Task<Like> GetLikeByUserIdAndPostIdAsync(int userId, int postId);
-    void EditCommentAsync(Comment comment);
-    void DeleteComment(Comment comment);
-
 }

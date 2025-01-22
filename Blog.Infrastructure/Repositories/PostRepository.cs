@@ -1,4 +1,6 @@
-﻿using Blog.Domain.AggregatesModel.PostAggregate;
+﻿using Blog.Domain.AggregatesModel.CommentAggregate;
+using Blog.Domain.AggregatesModel.LikeAggregate;
+using Blog.Domain.AggregatesModel.PostAggregate;
 using Blog.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,19 +14,9 @@ namespace Blog.Infrastructure.Repositories
             _dbContext = context;
         }
 
-        public async Task AddCommentAsync(Comment comment)
-        {
-            await _dbContext.Comments.AddAsync(comment);
-        }
-
         public async Task AddLikeAsync(Like like)
         {
             await _dbContext.Likes.AddAsync(like);
-        }
-
-        public void EditCommentAsync(Comment comment)
-        {
-            _dbContext.Comments.Update(comment);
         }
 
         public override async Task<Post> GetByIdAsync(int id)
@@ -40,11 +32,6 @@ namespace Blog.Infrastructure.Repositories
             return await _dbContext.Likes
                 .Where(l => l.UserId == userId && l.PostId == postId)
                 .FirstOrDefaultAsync();
-        }
-
-        public void DeleteComment(Comment comment)
-        {
-             _dbContext.Comments.Remove(comment);
         }
     }
 }

@@ -1,9 +1,6 @@
-﻿using Blog.Application.Commands.CreateComment;
-using Blog.Application.Commands.CreatePost;
-using Blog.Application.Commands.DeleteComment;
+﻿using Blog.Application.Commands.CreatePost;
 using Blog.Application.Commands.DeletePost;
 using Blog.Application.Commands.LikePost;
-using Blog.Application.Commands.UpdateComment;
 using Blog.Application.Commands.UpdatePost;
 using Blog.Application.Queries.GetAllPosts;
 using Blog.Application.Queries.GetPostById;
@@ -96,42 +93,6 @@ public class PostController : ControllerBase
             return NotFound(cmd);
         }
         return Ok(cmd);
-    }
-
-    [HttpPost("{id}/comments")]
-    public async Task<IActionResult> PostComment(int id, [FromBody] CreateCommentCommand command)
-    {
-        command.postId = id;
-        await _mediator.Send(command);
-
-        return NoContent();
-    }
-
-    [HttpPut("{postId}/comments/{commentId}")]
-    public async Task<IActionResult> UpdateComment(int postId, int commentId, [FromBody] UpdateCommentCommand command)
-    {
-        command.PostId = postId;
-        command.CommentId = commentId;
-
-        var response = await _mediator.Send(command);
-
-        if (!response.IsSuccess)
-            return BadRequest(response.Message);
-
-        return Ok(response.Message);
-    }
-
-    [HttpDelete("{postId}/comments/{commentId}")]
-    public async Task<IActionResult> DeleteComment(int postId, int commentId)
-    {
-        var command = new DeleteCommentCommand { CommentId = commentId, PostId = postId };
-        var response = await _mediator.Send(command);
-
-        if (!response.IsSuccess)
-        {
-            return BadRequest(response);
-        }
-        return Ok(response);
     }
 
     [HttpPost("{id}/like")]

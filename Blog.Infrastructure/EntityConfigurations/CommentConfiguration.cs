@@ -1,4 +1,4 @@
-﻿using Blog.Domain.AggregatesModel.PostAggregate;
+﻿using Blog.Domain.AggregatesModel.CommentAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

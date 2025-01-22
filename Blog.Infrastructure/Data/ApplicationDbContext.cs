@@ -1,3 +1,5 @@
+﻿using Blog.Domain.AggregatesModel.CommentAggregate;
+using Blog.Domain.AggregatesModel.LikeAggregate;
 ﻿using Blog.Domain.AggregatesModel.PostAggregate;
 using Blog.Domain.AggregatesModel.UserAggregate;
 using Blog.Domain.Core.Data;
@@ -25,10 +27,7 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        modelBuilder.ApplyConfiguration(new PostConfiguration());
-        modelBuilder.ApplyConfiguration(new CommentConfiguration());
-        modelBuilder.ApplyConfiguration(new UserConfiguration());
-        modelBuilder.ApplyConfiguration(new LikeConfiguration());
+        
         base.OnModelCreating(modelBuilder);
     }
 }

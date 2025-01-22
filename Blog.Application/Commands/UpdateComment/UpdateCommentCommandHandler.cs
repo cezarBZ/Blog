@@ -1,31 +1,26 @@
 ﻿using Blog.Application.Responses;
 using Blog.Application.Services;
+using Blog.Domain.AggregatesModel.CommentAggregate;
 using Blog.Domain.AggregatesModel.PostAggregate;
 using Blog.Domain.AggregatesModel.UserAggregate;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 
 namespace Blog.Application.Commands.UpdateComment
 {
     public class UpdateCommentCommandHandler : IRequestHandler<UpdateCommentCommand, Response<Unit>>
     {
-        private readonly IPostRepository _postRepository;
+        private readonly ICommentRepository _commentRepository;
         private readonly IUserContextService _userContextService;
-        public UpdateCommentCommandHandler(IPostRepository postRepository, IUserContextService userContextService)
+        public UpdateCommentCommandHandler(IPostRepository postRepository, IUserContextService userContextService, ICommentRepository commentRepository)
         {
-            _postRepository = postRepository;
             _userContextService = userContextService;
+            _commentRepository = commentRepository;
         }
         public async Task<Response<Unit>> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
         {
             User user = await _userContextService.GetUserAsync();
 
-            var post = await _postRepository.GetByIdAsync(request.PostId);
-
-            if (post == null)
-                return Response<Unit>.NotFound("Post não encontrado");
-
-            var comment = post.Comments.FirstOrDefault(comment => comment.Id == request.CommentId);
+            var comment = await _commentRepository.GetByIdAsync(request.CommentId);
 
             if (comment == null)
                 return Response<Unit>.NotFound("Comentário não encontrado");
@@ -36,9 +31,9 @@ namespace Blog.Application.Commands.UpdateComment
 
             comment.Edit(request.Content);
 
-            _postRepository.EditCommentAsync(comment);
+            _commentRepository.Update(comment);
 
-            await _postRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+            await _commentRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
             return Response<Unit>.Success(Unit.Value, "Comentário editado com sucesso");
         }

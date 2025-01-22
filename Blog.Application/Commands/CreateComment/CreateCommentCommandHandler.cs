@@ -1,19 +1,18 @@
 ﻿using Blog.Application.Services;
-using Blog.Domain.AggregatesModel.PostAggregate;
+using Blog.Domain.AggregatesModel.CommentAggregate;
 using MediatR;
 
 namespace Blog.Application.Commands.CreateComment
 {
     public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand, Unit>
     {
-        private readonly IPostRepository _postRepository;
+        private readonly ICommentRepository _commentRepository;
         private readonly IUserContextService _userContextService;
 
-
-        public CreateCommentCommandHandler(IPostRepository postRepository, IUserContextService userContextService)
+        public CreateCommentCommandHandler(IUserContextService userContextService, ICommentRepository commentRepository)
         {
-            _postRepository = postRepository;
             _userContextService = userContextService;
+            _commentRepository = commentRepository;
         }
 
         public async Task<Unit> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
@@ -24,8 +23,8 @@ namespace Blog.Application.Commands.CreateComment
 
             var comment = new Comment(request.Content, request.postId, userId.Value);
 
-            await _postRepository.AddCommentAsync(comment);
-            await _postRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+            await _commentRepository.AddAsync(comment);
+            await _commentRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

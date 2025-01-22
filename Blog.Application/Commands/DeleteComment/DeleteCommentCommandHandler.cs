@@ -1,4 +1,5 @@
 ﻿using Blog.Application.Responses;
+using Blog.Domain.AggregatesModel.CommentAggregate;
 using Blog.Domain.AggregatesModel.PostAggregate;
 using MediatR;
 
@@ -6,25 +7,20 @@ namespace Blog.Application.Commands.DeleteComment
 {
     public class DeleteCommentCommandHandler : IRequestHandler<DeleteCommentCommand, Response<Unit>>
     {
-        private readonly IPostRepository _postRepository;
-        public DeleteCommentCommandHandler(IPostRepository postRepository)
+        private readonly ICommentRepository _commentRepository;
+        public DeleteCommentCommandHandler(IPostRepository postRepository, ICommentRepository commentRepository)
         {
-            _postRepository = postRepository;
+            _commentRepository = commentRepository;
         }
         public async Task<Response<Unit>> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
         {
-            var post = await _postRepository.GetByIdAsync(request.PostId);
-
-            if (post == null)
-                return Response<Unit>.NotFound("Post not found");
-
-            var comment = post.Comments.FirstOrDefault(c => c.Id == request.CommentId);
+            var comment = await _commentRepository.GetByIdAsync(request.CommentId);
 
             if (comment == null)
                 return Response<Unit>.NotFound("comment not found");
 
-            _postRepository.DeleteComment(comment);
-            await _postRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+            _commentRepository.Delete(comment);
+            await _commentRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
             return Response<Unit>.Success(Unit.Value, "Comentário deletado com sucesso");
         }
