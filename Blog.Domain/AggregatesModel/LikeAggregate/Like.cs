@@ -1,9 +1,10 @@
-﻿using Blog.Domain.AggregatesModel.UserAggregate;
+﻿using Blog.Domain.AggregatesModel.PostAggregate;
+using Blog.Domain.AggregatesModel.UserAggregate;
 using Blog.Domain.Core.Models;
 
-namespace Blog.Domain.AggregatesModel.PostAggregate
+namespace Blog.Domain.AggregatesModel.LikeAggregate
 {
-    public class Like : Entity<int>
+    public class Like : Entity<int>, IAggregateRoot
     {
         public Like(int postId, int userId)
         {

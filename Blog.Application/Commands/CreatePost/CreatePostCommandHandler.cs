@@ -33,14 +33,13 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Respo
             var userId = userContextService.GetUserId();
 
             var newPost = new Post(request.Title, request.Content, coverImageUrl, userId.Value);
-            repository.Add(newPost);
-            var result = repository.UnitOfWork.SaveChangesAsync(cancellationToken);
+            await repository.AddAsync(newPost);
+            await repository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
             return Response<int>.Success(newPost.Id, "Post created successfuly");
         }
         catch (Exception error)
         {
-
             return Response<int>.Failure($"Error creating post: {error.Message}");
         }
 

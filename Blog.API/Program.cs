@@ -14,6 +14,7 @@ using System.Text;
 using Blog.API.IoC;
 using Blog.Application.Services;
 using Blog.Domain.AggregatesModel.CommentAggregate;
+using Blog.Domain.AggregatesModel.LikeAggregate;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,7 @@ builder.Services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
