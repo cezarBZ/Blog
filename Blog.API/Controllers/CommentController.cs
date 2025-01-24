@@ -20,9 +20,13 @@ namespace Blog.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCommentCommand command)
         {
-            await _mediator.Send(command);
+            var response = await _mediator.Send(command);
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response.Message);
+            }
 
-            return NoContent();
+            return Ok(response.Message);
         }
 
         [HttpPut("{Id}")]
