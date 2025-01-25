@@ -1,4 +1,4 @@
-﻿using Blog.Application.Commands.CreatePost;
+﻿using Blog.Application.Commands.PostCommands.CreatePost;
 using MediatR;
 using System.Reflection;
 

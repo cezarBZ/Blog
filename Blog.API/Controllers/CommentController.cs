@@ -1,6 +1,6 @@
-﻿using Blog.Application.Commands.CreateComment;
+﻿using Blog.Application.Commands.CommentCommands.CreateComment;
+using Blog.Application.Commands.CommentCommands.UpdateComment;
 using Blog.Application.Commands.DeleteComment;
-using Blog.Application.Commands.UpdateComment;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

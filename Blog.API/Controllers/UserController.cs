@@ -1,5 +1,5 @@
-﻿using Blog.Application.Commands.CreateUser;
-using Blog.Application.Commands.LoginUser;
+﻿using Blog.Application.Commands.UserCommands.CreateUser;
+using Blog.Application.Commands.UserCommands.LoginUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
