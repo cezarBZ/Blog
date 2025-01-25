@@ -30,9 +30,9 @@ namespace Blog.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateUserCommand command)
         {
-            var id = await _mediator.Send(command);
+            var response = await _mediator.Send(command);
 
-            return Ok(id);
+            return Ok(response.Message);
         }
     }
 }

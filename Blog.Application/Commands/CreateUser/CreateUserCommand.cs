@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using Blog.Application.Responses;
+using MediatR;
 
 namespace Blog.Application.Commands.CreateUser
 {
-    public class CreateUserCommand : IRequest<int>
+    public class CreateUserCommand : IRequest<Response<int>>
     {
         public string Username { get; set; }
         public string Email { get; set; }

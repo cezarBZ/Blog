@@ -1,10 +1,11 @@
-﻿using Blog.Domain.AggregatesModel.UserAggregate;
+﻿using Blog.Application.Responses;
+using Blog.Domain.AggregatesModel.UserAggregate;
 using Blog.Domain.Core.Auth;
 using MediatR;
 
 namespace Blog.Application.Commands.CreateUser
 {
-    internal class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
+    internal class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response<int>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IAuthService _authService;
@@ -14,7 +15,7 @@ namespace Blog.Application.Commands.CreateUser
             _userRepository = userRepository;
             _authService = authService;
         }
-        public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Response<int>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var passwordHash = _authService.ComputeSha256Hash(request.Password);
 
@@ -22,7 +23,7 @@ namespace Blog.Application.Commands.CreateUser
 
             await _userRepository.AddAsync(user);
 
-            return user.Id;
+            return Response<int>.Success(user.Id, "Usuário criado com sucesso.");
         }
     }
 }
