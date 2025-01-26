@@ -38,6 +38,12 @@ namespace Blog.Infrastructure.EntityConfigurations
             builder.Property(p => p.LikeCount)
                 .IsRequired()
                 .HasDefaultValue(0);
+
+            builder.HasMany(c => c.Comments)
+               .WithOne() 
+               .HasForeignKey(l => l.PostId)
+               .HasPrincipalKey(c => c.Id)
+               .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

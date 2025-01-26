@@ -28,17 +28,19 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .HasColumnType("datetime")
             .IsRequired(false);
 
-        builder.HasOne(p => p.Post)
-            .WithMany(c => c.Comments)
-            .HasForeignKey(c => c.PostId)
-            .OnDelete(DeleteBehavior.Cascade)
-            .HasConstraintName("FK_Comment_Post");
+        builder.HasOne(c => c.Post)
+                   .WithMany(u => u.Comments) 
+                   .HasForeignKey(c => c.PostId)
+                   .OnDelete(DeleteBehavior.Cascade); 
 
-        builder.HasOne(p => p.User)
-            .WithMany()
-            .HasForeignKey(c => c.UserId)
-            .OnDelete(DeleteBehavior.Cascade)
-            .HasConstraintName("FK_Comment_User");
+        builder.HasOne(c => c.User)
+               .WithMany(u => u.Comments) 
+               .HasForeignKey(c => c.UserId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Property(p => p.LikeCount)
+                .IsRequired()
+                .HasDefaultValue(0);
 
     }
 }
