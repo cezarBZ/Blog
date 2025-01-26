@@ -1,4 +1,5 @@
-﻿using Blog.Domain.AggregatesModel.PostAggregate;
+﻿using Blog.Domain.AggregatesModel.LikeAggregate;
+using Blog.Domain.AggregatesModel.PostAggregate;
 using Blog.Domain.AggregatesModel.UserAggregate;
 using Blog.Domain.Core.Models;
 
@@ -22,6 +23,7 @@ public class Comment : Entity<int>, IAggregateRoot
     public string Content { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
+    public int LikeCount { get; private set; }
 
     public void Edit(string newContent)
     {

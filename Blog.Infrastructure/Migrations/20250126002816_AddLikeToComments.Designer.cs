@@ -4,6 +4,7 @@ using Blog.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250126002816_AddLikeToComments")]
+    partial class AddLikeToComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,9 +48,6 @@ namespace Blog.Infrastructure.Migrations
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PostId1")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
@@ -57,8 +57,6 @@ namespace Blog.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PostId");
-
-                    b.HasIndex("PostId1");
 
                     b.HasIndex("UserId");
 
@@ -73,8 +71,14 @@ namespace Blog.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("LikedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("PostId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TargetId")
                         .HasColumnType("int");
@@ -88,6 +92,10 @@ namespace Blog.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("PostId");
 
                     b.HasIndex("UserId");
 
@@ -187,15 +195,12 @@ namespace Blog.Infrastructure.Migrations
 
             modelBuilder.Entity("Blog.Domain.AggregatesModel.CommentAggregate.Comment", b =>
                 {
-                    b.HasOne("Blog.Domain.AggregatesModel.PostAggregate.Post", null)
+                    b.HasOne("Blog.Domain.AggregatesModel.PostAggregate.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Blog.Domain.AggregatesModel.PostAggregate.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId1");
+                        .IsRequired()
+                        .HasConstraintName("FK_Comment_Post");
 
                     b.HasOne("Blog.Domain.AggregatesModel.UserAggregate.User", "User")
                         .WithMany("Comments")
@@ -211,6 +216,14 @@ namespace Blog.Infrastructure.Migrations
 
             modelBuilder.Entity("Blog.Domain.AggregatesModel.LikeAggregate.Like", b =>
                 {
+                    b.HasOne("Blog.Domain.AggregatesModel.CommentAggregate.Comment", null)
+                        .WithMany("Likes")
+                        .HasForeignKey("CommentId");
+
+                    b.HasOne("Blog.Domain.AggregatesModel.PostAggregate.Post", null)
+                        .WithMany("Likes")
+                        .HasForeignKey("PostId");
+
                     b.HasOne("Blog.Domain.AggregatesModel.UserAggregate.User", "User")
                         .WithMany("Likes")
                         .HasForeignKey("UserId")
@@ -228,9 +241,16 @@ namespace Blog.Infrastructure.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("Blog.Domain.AggregatesModel.CommentAggregate.Comment", b =>
+                {
+                    b.Navigation("Likes");
+                });
+
             modelBuilder.Entity("Blog.Domain.AggregatesModel.PostAggregate.Post", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("Blog.Domain.AggregatesModel.UserAggregate.User", b =>

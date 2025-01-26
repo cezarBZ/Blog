@@ -15,7 +15,7 @@ namespace Blog.Infrastructure.Repositories
         public async Task<Like> GetLikeByUserIdAndPostIdAsync(int userId, int postId)
         {
             return await _dbContext.Likes
-                .Where(l => l.UserId == userId && l.PostId == postId)
+                .Where(l => l.UserId == userId && l.TargetType == LikeTargetType.Post && l.TargetId == postId)
                 .FirstOrDefaultAsync();
         }
     }

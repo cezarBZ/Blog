@@ -16,11 +16,7 @@ namespace Blog.Infrastructure.EntityConfigurations
                 .IsRequired()
                 .ValueGeneratedOnAdd();
 
-            builder.HasOne(p => p.Post)
-            .WithMany(c => c.Likes)
-            .HasForeignKey(c => c.PostId)
-            .OnDelete(DeleteBehavior.Cascade)
-            .HasConstraintName("FK_Like_Post");
+            builder.Property(l => l.TargetId).IsRequired();
 
             builder.HasOne(p => p.User)
             .WithMany(c => c.Likes)
@@ -29,8 +25,18 @@ namespace Blog.Infrastructure.EntityConfigurations
             .HasConstraintName("FK_Like_User");
 
             builder.Property(p => p.LikedAt)
-                .IsRequired()
-                .HasColumnType("datetime");
+                .IsRequired();
+
+            builder.Property(l => l.TargetType)
+                   .IsRequired()
+                   .HasConversion(
+                       v => v.ToString(),
+                       v => (LikeTargetType)Enum.Parse(typeof(LikeTargetType), v)
+                   )
+                   .HasMaxLength(50);
+
+            builder.HasIndex(l => new { l.TargetId, l.TargetType });
+            builder.HasIndex(l => l.UserId);
         }
     }
 }
