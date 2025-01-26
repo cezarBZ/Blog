@@ -1,7 +1,7 @@
-﻿using Blog.Application.Commands.DislikePost;
-using Blog.Application.Commands.LikePost;
+﻿using Blog.Application.Commands.LikeCommands.Dislike;
+using Blog.Application.Commands.LikeCommands.LikeComment;
+using Blog.Application.Commands.LikeCommands.LikePost;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Controllers
@@ -17,8 +17,8 @@ namespace Blog.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("{postId}")]
-        public async Task<IActionResult> Like(int postId)
+        [HttpPost("post/{postId}")]
+        public async Task<IActionResult> LikePost(int postId)
         {
             var command = new LikePostCommand { postId = postId };
             var response = await _mediator.Send(command);
@@ -33,7 +33,20 @@ namespace Blog.API.Controllers
         [HttpDelete("{Id}")]
         public async Task<IActionResult> Dislike(int Id)
         {
-            var command = new DislikePostCommand { Id = Id };
+            var command = new DislikeCommand { Id = Id };
+            var response = await _mediator.Send(command);
+
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("comment/{commentId}")]
+        public async Task<IActionResult> LikeComment(int commentId)
+        {
+            var command = new LikeCommentCommand { commentId = commentId };
             var response = await _mediator.Send(command);
 
             if (!response.IsSuccess)

@@ -1,5 +1,5 @@
-﻿using Blog.Application.Commands.DeletePost;
-using Blog.Application.Commands.PostCommands.CreatePost;
+﻿using Blog.Application.Commands.PostCommands.CreatePost;
+using Blog.Application.Commands.PostCommands.DeletePost;
 using Blog.Application.Commands.PostCommands.UpdatePost;
 using Blog.Application.Queries.GetAllPosts;
 using Blog.Application.Queries.GetPostById;

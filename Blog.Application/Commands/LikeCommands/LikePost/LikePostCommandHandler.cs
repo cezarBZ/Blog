@@ -24,13 +24,13 @@ namespace Blog.Application.Commands.LikeCommands.LikePost
                 return new Response<Unit>(false, "Usuário não encontrado.");
             }
 
-            var existingLike = await _likeRepository.GetLikeByUserIdAndPostIdAsync(userId.Value, request.postId);
+            var existingLike = await _likeRepository.GetLikeByUserIdAndTargetIdAsync(userId.Value, request.postId, LikeTargetType.Post);
             if (existingLike != null)
             {
                 return new Response<Unit>(false, "Você já curtiu este post.");
             }
 
-            var like = new Like(request.postId, userId.Value);
+            var like = new Like(request.postId, userId.Value, LikeTargetType.Post);
             await _likeRepository.AddAsync(like);
 
             await _likeRepository.UnitOfWork.SaveChangesAsync(cancellationToken);

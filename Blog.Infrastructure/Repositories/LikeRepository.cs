@@ -12,10 +12,10 @@ namespace Blog.Infrastructure.Repositories
             _dbContext = context;
         }
 
-        public async Task<Like> GetLikeByUserIdAndPostIdAsync(int userId, int postId)
+        public async Task<Like> GetLikeByUserIdAndTargetIdAsync(int userId, int targetId, LikeTargetType targetType)
         {
             return await _dbContext.Likes
-                .Where(l => l.UserId == userId && l.TargetType == LikeTargetType.Post && l.TargetId == postId)
+                .Where(l => l.UserId == userId && l.TargetType == targetType && l.TargetId == targetId)
                 .FirstOrDefaultAsync();
         }
     }
