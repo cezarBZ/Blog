@@ -17,13 +17,23 @@ namespace Blog.Application.Commands.UserCommands.CreateUser
         }
         public async Task<Response<int>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var passwordHash = _authService.ComputeSha256Hash(request.Password);
+            try
+            {
+                var passwordHash = _authService.ComputeSha256Hash(request.Password);
 
-            var user = new User(request.Username, request.Email, passwordHash, true, request.Role);
+                var user = new User(request.Username, request.Email, passwordHash, true, request.Role);
 
-            await _userRepository.AddAsync(user);
+                await _userRepository.AddAsync(user);
+                await _userRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Response<int>.Success(user.Id, "Usuário criado com sucesso.");
+                return Response<int>.Success(user.Id, "Usuário criado com sucesso.");
+
+            }
+            catch (System.Exception error)
+            {
+
+                return Response<int>.Failure(error.Message);
+            }
         }
     }
 }
