@@ -18,5 +18,12 @@ namespace Blog.Infrastructure.Repositories
                 .Where(l => l.UserId == userId && l.TargetType == targetType && l.TargetId == targetId)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<IReadOnlyList<Like>> GetPostLikes(int postId)
+        {
+            return await _dbContext.Likes
+                .Where(l => l.TargetType == LikeTargetType.Post && l.TargetId == postId)
+                .ToListAsync();
+        }
     }
 }
