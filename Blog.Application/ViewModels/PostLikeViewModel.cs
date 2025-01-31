@@ -1,5 +1,6 @@
-public class PostLikeDto
+public class PostLikeViewModel
 {
+    public int LikeId { get; set; }
     public int UserId { get; set; }
     public string UserName { get; set; }
     public string UserProfilePicture { get; set; }

@@ -1,7 +1,6 @@
 ﻿using Blog.Application.Commands.LikeCommands.Dislike;
 using Blog.Application.Commands.LikeCommands.LikeComment;
 using Blog.Application.Commands.LikeCommands.LikePost;
-using Blog.Application.Queries.GetPostLikes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,19 +48,6 @@ namespace Blog.API.Controllers
         {
             var command = new LikeCommentCommand { commentId = commentId };
             var response = await _mediator.Send(command);
-
-            if (!response.IsSuccess)
-            {
-                return BadRequest(response);
-            }
-            return Ok(response);
-        }
-
-        [HttpGet("post/{postId}")]
-        public async Task<IActionResult> GetPostLikes(int postId)
-        {
-            var query = new GetPostLikesQuery { PostId = postId };
-            var response = await _mediator.Send(query);
 
             if (!response.IsSuccess)
             {

@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Blog.Application.Queries.GetAllPosts
+namespace Blog.Application.Queries.PostQueries.GetAllPosts
 {
     public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, Response<IReadOnlyList<PostViewModel>>>
     {

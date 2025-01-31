@@ -4,7 +4,7 @@ using Blog.Domain.AggregatesModel.PostAggregate;
 using MediatR;
 
 
-namespace Blog.Application.Queries.GetPostById
+namespace Blog.Application.Queries.PostQueries.GetPostById
 {
     public class GetPostByIdQueryHandler : IRequestHandler<GetPostByIdQuery, Response<PostViewModel>>
     {

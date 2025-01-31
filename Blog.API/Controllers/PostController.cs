@@ -1,8 +1,10 @@
 ﻿using Blog.Application.Commands.PostCommands.CreatePost;
 using Blog.Application.Commands.PostCommands.DeletePost;
 using Blog.Application.Commands.PostCommands.UpdatePost;
-using Blog.Application.Queries.GetAllPosts;
-using Blog.Application.Queries.GetPostById;
+using Blog.Application.Queries.CommentQueries.GetCommentsByPostId;
+using Blog.Application.Queries.LikeQueries.GetLikesByPostId;
+using Blog.Application.Queries.PostQueries.GetAllPosts;
+using Blog.Application.Queries.PostQueries.GetPostById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +49,32 @@ public class PostController : ControllerBase
         }
 
         return Ok(post);
+    }
+
+    [HttpGet("{postId}/comments")]
+    public async Task<IActionResult> GetPostComments(int postId)
+    {
+        var query = new GetCommentsByPostIdQuery { PostId = postId };
+        var response = await _mediator.Send(query);
+
+        if (!response.IsSuccess)
+        {
+            return BadRequest(response);
+        }
+        return Ok(response);
+    }
+
+    [HttpGet("{postId}/likes")]
+    public async Task<IActionResult> GetPostLikes(int postId)
+    {
+        var query = new GetLikesByPostIdQuery { PostId = postId };
+        var response = await _mediator.Send(query);
+
+        if (!response.IsSuccess)
+        {
+            return BadRequest(response);
+        }
+        return Ok(response);
     }
 
     [HttpPost]

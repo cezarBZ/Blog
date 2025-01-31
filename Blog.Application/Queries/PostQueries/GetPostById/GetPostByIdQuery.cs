@@ -2,7 +2,7 @@
 using Blog.Application.ViewModels;
 using MediatR;
 
-namespace Blog.Application.Queries.GetPostById
+namespace Blog.Application.Queries.PostQueries.GetPostById
 {
     public class GetPostByIdQuery : IRequest<Response<PostViewModel>>
     {
