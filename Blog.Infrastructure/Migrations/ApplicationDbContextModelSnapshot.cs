@@ -45,9 +45,6 @@ namespace Blog.Infrastructure.Migrations
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PostId1")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
@@ -57,8 +54,6 @@ namespace Blog.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PostId");
-
-                    b.HasIndex("PostId1");
 
                     b.HasIndex("UserId");
 
@@ -187,15 +182,11 @@ namespace Blog.Infrastructure.Migrations
 
             modelBuilder.Entity("Blog.Domain.AggregatesModel.CommentAggregate.Comment", b =>
                 {
-                    b.HasOne("Blog.Domain.AggregatesModel.PostAggregate.Post", null)
+                    b.HasOne("Blog.Domain.AggregatesModel.PostAggregate.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Blog.Domain.AggregatesModel.PostAggregate.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId1");
 
                     b.HasOne("Blog.Domain.AggregatesModel.UserAggregate.User", "User")
                         .WithMany("Comments")

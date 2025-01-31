@@ -1,6 +1,8 @@
 ﻿using Blog.Domain.AggregatesModel.CommentAggregate;
+using Blog.Domain.AggregatesModel.LikeAggregate;
 using Blog.Domain.AggregatesModel.PostAggregate;
 using Blog.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Infrastructure.Repositories
 {
@@ -10,6 +12,14 @@ namespace Blog.Infrastructure.Repositories
         public CommentRepository(ApplicationDbContext context) : base(context)
         {
             _dbContext = context;
+        }
+
+        public async Task<IReadOnlyList<Comment>> GetPostComments(int postId)
+        {
+            return await _dbContext.Comments
+                .Include(c => c.User)
+                .Where(c => c.PostId == postId)
+                .ToListAsync();
         }
     }
 }

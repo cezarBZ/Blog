@@ -29,12 +29,12 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .IsRequired(false);
 
         builder.HasOne(c => c.Post)
-                   .WithMany(u => u.Comments) 
+                   .WithMany(u => u.Comments)
                    .HasForeignKey(c => c.PostId)
-                   .OnDelete(DeleteBehavior.Cascade); 
+                   .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(c => c.User)
-               .WithMany(u => u.Comments) 
+               .WithMany(u => u.Comments)
                .HasForeignKey(c => c.UserId)
                .OnDelete(DeleteBehavior.Restrict);
 

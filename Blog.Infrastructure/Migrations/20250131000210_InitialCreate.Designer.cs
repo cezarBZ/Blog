@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250120031134_AddLikeTable")]
-    partial class AddLikeTable
+    [Migration("20250131000210_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Blog.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Blog.Domain.AggregatesModel.PostAggregate.Comment", b =>
+            modelBuilder.Entity("Blog.Domain.AggregatesModel.CommentAggregate.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,6 +39,11 @@ namespace Blog.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
+
+                    b.Property<int>("LikeCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
@@ -58,7 +63,7 @@ namespace Blog.Infrastructure.Migrations
                     b.ToTable("Comment", "BLOG");
                 });
 
-            modelBuilder.Entity("Blog.Domain.AggregatesModel.PostAggregate.Like", b =>
+            modelBuilder.Entity("Blog.Domain.AggregatesModel.LikeAggregate.Like", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,19 +72,24 @@ namespace Blog.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("LikedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("PostId")
+                    b.Property<int>("TargetId")
                         .HasColumnType("int");
+
+                    b.Property<string>("TargetType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PostId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("TargetId", "TargetType");
 
                     b.ToTable("Like", "BLOG");
                 });
@@ -173,14 +183,13 @@ namespace Blog.Infrastructure.Migrations
                     b.ToTable("User", "BLOG");
                 });
 
-            modelBuilder.Entity("Blog.Domain.AggregatesModel.PostAggregate.Comment", b =>
+            modelBuilder.Entity("Blog.Domain.AggregatesModel.CommentAggregate.Comment", b =>
                 {
                     b.HasOne("Blog.Domain.AggregatesModel.PostAggregate.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Comment_Post");
+                        .IsRequired();
 
                     b.HasOne("Blog.Domain.AggregatesModel.UserAggregate.User", "User")
                         .WithMany("Comments")
@@ -194,23 +203,14 @@ namespace Blog.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Blog.Domain.AggregatesModel.PostAggregate.Like", b =>
+            modelBuilder.Entity("Blog.Domain.AggregatesModel.LikeAggregate.Like", b =>
                 {
-                    b.HasOne("Blog.Domain.AggregatesModel.PostAggregate.Post", "Post")
-                        .WithMany("Likes")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Like_Post");
-
                     b.HasOne("Blog.Domain.AggregatesModel.UserAggregate.User", "User")
                         .WithMany("Likes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_User_Likes");
-
-                    b.Navigation("Post");
 
                     b.Navigation("User");
                 });
@@ -225,8 +225,6 @@ namespace Blog.Infrastructure.Migrations
             modelBuilder.Entity("Blog.Domain.AggregatesModel.PostAggregate.Post", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("Blog.Domain.AggregatesModel.UserAggregate.User", b =>

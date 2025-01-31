@@ -22,6 +22,7 @@ namespace Blog.Infrastructure.Repositories
         public async Task<IReadOnlyList<Like>> GetPostLikes(int postId)
         {
             return await _dbContext.Likes
+                .Include(l => l.User)
                 .Where(l => l.TargetType == LikeTargetType.Post && l.TargetId == postId)
                 .ToListAsync();
         }
