@@ -1,5 +1,6 @@
 ﻿using Blog.Application.Commands.UserCommands.CreateUser;
 using Blog.Application.Commands.UserCommands.LoginUser;
+using Blog.Application.Queries.UserQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,6 +34,18 @@ namespace Blog.API.Controllers
             var response = await _mediator.Send(command);
 
             return Ok(response.Message);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetLoggedUser()
+        {
+            var query = new GetLoggedUserQuery();
+            var response = await _mediator.Send(query);
+
+            if (response == null)
+                return BadRequest();
+
+            return Ok(response);
         }
     }
 }

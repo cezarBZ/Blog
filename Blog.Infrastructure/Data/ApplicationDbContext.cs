@@ -3,7 +3,6 @@ using Blog.Domain.AggregatesModel.LikeAggregate;
 using Blog.Domain.AggregatesModel.PostAggregate;
 using Blog.Domain.AggregatesModel.UserAggregate;
 using Blog.Domain.Core.Data;
-using Blog.Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System.Reflection;
