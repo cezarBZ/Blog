@@ -22,9 +22,11 @@ namespace Blog.Application.Commands.UserCommands.LoginUser
             if (user == null)
                 return null;
 
-            _userRepository.UpdateLastLogin(user);
-
             var token = _authService.GenerateJwtToken(user.Email, user.Role, user.Id);
+
+            user.RegisterLogin();
+            _userRepository.Update(user);
+            await _userRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
             return new LoginUserViewModel(user.Email, token);
         }
     }
