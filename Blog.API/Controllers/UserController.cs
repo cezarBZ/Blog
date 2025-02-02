@@ -1,4 +1,5 @@
 ﻿using Blog.Application.Commands.UserCommands.CreateUser;
+using Blog.Application.Commands.UserCommands.Follow;
 using Blog.Application.Commands.UserCommands.LoginUser;
 using Blog.Application.Queries.UserQueries;
 using MediatR;
@@ -46,6 +47,19 @@ namespace Blog.API.Controllers
                 return BadRequest();
 
             return Ok(response);
+        }
+
+        [HttpPost("/follow/{followedId}")]
+        public async Task<IActionResult> FollowUser(int followedId)
+        {
+            var command = new FollowUserCommand(followedId);
+
+            var result = await _mediator.Send(command);
+
+            if (result == null)
+                return BadRequest();
+
+            return Ok(result.Message);
         }
     }
 }
