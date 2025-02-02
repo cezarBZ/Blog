@@ -1,6 +1,7 @@
 ﻿using Blog.Application.Commands.UserCommands.CreateUser;
 using Blog.Application.Commands.UserCommands.Follow;
 using Blog.Application.Commands.UserCommands.LoginUser;
+using Blog.Application.Commands.UserCommands.Unfollow;
 using Blog.Application.Queries.UserQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -53,8 +54,24 @@ namespace Blog.API.Controllers
         public async Task<IActionResult> FollowUser(int followedId)
         {
             var command = new FollowUserCommand(followedId);
-            await _mediator.Send(command);
-            return Ok();
+
+            var result = await _mediator.Send(command);
+
+            if (result == null)
+                return BadRequest();
+
+            return Ok(result.Message);
+        }
+
+        [HttpPost("/unfollow/{followedId}")]
+        public async Task<IActionResult> UnfollowUser(int followedId)
+        {
+            var command = new UnfollowUserCommand(followedId);
+            var result = await _mediator.Send(command);
+            if (result == null)
+                return BadRequest();
+
+            return Ok(result.Message);
         }
 
     }
