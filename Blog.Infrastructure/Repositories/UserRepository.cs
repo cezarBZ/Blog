@@ -16,4 +16,9 @@ public class UserRepository : Repository<User, int>, IUserRepository
     {
         return await _dbContext.Users.SingleOrDefaultAsync(u => u.Email == email && u.PasswordHash == passwordHash);
     }
+
+    public async Task<User> GetByIdWithFollowedAsync(int id)
+    {
+        return await _dbContext.Users.Include(u => u.Following).FirstOrDefaultAsync(u => u.Id == id);
+    }
 }
