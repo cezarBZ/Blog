@@ -39,6 +39,14 @@ namespace Blog.Infrastructure.EntityConfigurations
             builder.HasIndex(u => u.Username)
                    .IsUnique();
 
+            builder.Property(p => p.FollowersCount)
+                .IsRequired()
+                .HasDefaultValue(0);
+
+            builder.Property(p => p.FollowingCount)
+                .IsRequired()
+                .HasDefaultValue(0);
+
             builder.HasMany(u => u.Comments)
                 .WithOne(c => c.User)
                 .HasForeignKey(c => c.UserId)
@@ -50,6 +58,14 @@ namespace Blog.Infrastructure.EntityConfigurations
                 .HasForeignKey(l => l.UserId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_User_Likes");
+
+            builder.HasMany(u => u.Followers)
+                   .WithOne(uf => uf.Followed)
+                   .HasForeignKey(uf => uf.FollowedId);
+
+            builder.HasMany(u => u.Following)
+                   .WithOne(uf => uf.Follower)
+                   .HasForeignKey(uf => uf.FollowerId);
         }
     }
 }
