@@ -21,4 +21,13 @@ public class UserRepository : Repository<User, int>, IUserRepository
     {
         return await _dbContext.Users.Include(u => u.Following).FirstOrDefaultAsync(u => u.Id == id);
     }
+
+    public async Task<IReadOnlyList<User>> GetFollowersAsync(int userId)
+    {
+        return await _dbContext.Users
+            .Include(u => u.Followers)
+            .Where(u => u.Following.Any(f => f.FollowedId == userId))
+            .ToListAsync();
+    }
+
 }

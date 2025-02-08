@@ -74,5 +74,17 @@ namespace Blog.API.Controllers
             return Ok(result.Message);
         }
 
+        [HttpGet("{userId}/followers")]
+        public async Task<IActionResult> GetFollowers(int userId)
+        {
+            var query = new GetFollowersQuery(userId);
+            var response = await _mediator.Send(query);
+
+            if (response == null)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
     }
 }
