@@ -86,5 +86,17 @@ namespace Blog.API.Controllers
             return Ok(response);
         }
 
+        [HttpGet("{userId}/following")]
+        public async Task<IActionResult> GetFollowed(int userId)
+        {
+            var query = new GetFollowedQuery(userId);
+            var response = await _mediator.Send(query);
+
+            if (response == null)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
     }
 }

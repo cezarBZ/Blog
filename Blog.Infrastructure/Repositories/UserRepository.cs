@@ -30,4 +30,12 @@ public class UserRepository : Repository<User, int>, IUserRepository
             .ToListAsync();
     }
 
+    public async Task<IReadOnlyList<User>> GetFollowedAsync(int userId)
+    {
+        return await _dbContext.Users
+            .Include(u => u.Following)
+            .Where(u => u.Followers.Any(f => f.FollowerId == userId))
+            .ToListAsync();
+    }
+
 }
