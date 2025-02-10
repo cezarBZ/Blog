@@ -7,7 +7,7 @@ namespace Blog.Domain.AggregatesModel.UserAggregate;
 
 public class User : Entity<int>, IAggregateRoot
 {
-    public User(string username, string email, string passwordHash, bool active, string role)
+    public User(string username, string email, string passwordHash, bool active, string role, string profilePictureUrl)
     {
         Username = username;
         Email = email;
@@ -17,6 +17,7 @@ public class User : Entity<int>, IAggregateRoot
         Role = role;
         FollowersCount = 0;
         FollowingCount = 0;
+        ProfilePictureUrl = profilePictureUrl;
     }
 
     public string Username { get; private set; }
@@ -28,6 +29,7 @@ public class User : Entity<int>, IAggregateRoot
     public int FollowingCount { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? LastLoginAt { get; private set; }
+    public string ProfilePictureUrl { get; private set; }
 
     public ICollection<Like> Likes { get; set; } = new List<Like>();
     public ICollection<Post> Posts { get; set; } = new List<Post>();

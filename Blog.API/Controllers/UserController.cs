@@ -31,9 +31,15 @@ namespace Blog.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateUserCommand command)
+        public async Task<IActionResult> Post([FromForm] CreateUserCommand command)
         {
             var response = await _mediator.Send(command);
+
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response.Message);
+                
+            }
 
             return Ok(response.Message);
         }

@@ -30,6 +30,7 @@ namespace Blog.Application.Queries.UserQueries
                 Id = user.Id,
                 Username = user.Username,
                 Email = user.Email,
+                ProfilePictureUrl = user.ProfilePictureUrl
             };
 
             return Response<UserViewModel>.Success(userViewModel);

@@ -47,6 +47,9 @@ namespace Blog.Infrastructure.EntityConfigurations
                 .IsRequired()
                 .HasDefaultValue(0);
 
+            builder.Property(p => p.ProfilePictureUrl)
+                .HasColumnType("nvarchar(max)");
+
             builder.HasMany(u => u.Comments)
                 .WithOne(c => c.User)
                 .HasForeignKey(c => c.UserId)
@@ -66,6 +69,7 @@ namespace Blog.Infrastructure.EntityConfigurations
             builder.HasMany(u => u.Following)
                    .WithOne(uf => uf.Follower)
                    .HasForeignKey(uf => uf.FollowerId);
+
         }
     }
 }

@@ -29,6 +29,7 @@ namespace Blog.Application.Queries.UserQueries
                 Id = f.Id,
                 Email = f.Email,
                 Username = f.Username,
+                ProfilePictureUrl = f.ProfilePictureUrl
             }).ToList();
 
             return Response<IReadOnlyList<UserViewModel>>.Success(followedViewModel);
