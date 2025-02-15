@@ -10,6 +10,8 @@ namespace Blog.Application.Responses
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string CoverImageUrl { get; set; }
+        public int LikeCount { get; set; }
+        public int CommentCount { get; set; }
         public List<CommentsResponse> Comments { get; set; }
 
     }

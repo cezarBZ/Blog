@@ -38,6 +38,10 @@ namespace Blog.Infrastructure.EntityConfigurations
             builder.Property(p => p.LikeCount)
                 .IsRequired()
                 .HasDefaultValue(0);
+
+            builder.Property(p => p.CommentCount)
+                .IsRequired()
+                .HasDefaultValue(0);
         }
     }
 }

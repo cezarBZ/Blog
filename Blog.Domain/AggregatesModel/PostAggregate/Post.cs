@@ -24,6 +24,8 @@ public class Post : Entity<int>, IAggregateRoot
     public string CoverImageUrl { get; private set; }
     public List<Comment> Comments { get; private set; }
     public int LikeCount { get; private set; }
+    public int CommentCount { get; private set; }
+
     public int CreatedBy { get; private set; }
     public void Edit(string newTitle, string newContent, string newCoverImageUrl)
     {
@@ -41,6 +43,16 @@ public class Post : Entity<int>, IAggregateRoot
     public void DecrementLikeCount()
     {
         LikeCount--;
+    }
+
+    public void IncrementCommentCount()
+    {
+        CommentCount++;
+    }
+
+    public void DecrementCommentCount()
+    {
+        CommentCount--;
     }
 
 }
