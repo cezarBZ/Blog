@@ -27,7 +27,7 @@ namespace Blog.Application.Queries.LikeQueries.GetLikesByPostId
             {
                 PostId = request.PostId,
                 TotalLikes = likes.Count,
-                Likes = likes.Select(l => new PostLikeViewModel
+                Likes = likes.Select(l => new PostLikeResponse
                 {
                     LikeId = l.Id,
                     UserId = l.UserId,

@@ -1,8 +1,8 @@
-﻿namespace Blog.Application.ViewModels
+﻿namespace Blog.Application.Responses
 {
-    public class LoginUserViewModel
+    public class LoginUserResponse
     {
-        public LoginUserViewModel(string email, string token)
+        public LoginUserResponse(string email, string token)
         {
             Email = email;
             Token = token;

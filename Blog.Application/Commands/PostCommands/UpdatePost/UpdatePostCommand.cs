@@ -1,12 +1,11 @@
 ﻿using Blog.Application.Responses;
-using Blog.Application.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json.Serialization;
 
 namespace Blog.Application.Commands.PostCommands.UpdatePost
 {
-    public class UpdatePostCommand : IRequest<Response<PostViewModel>>
+    public class UpdatePostCommand : IRequest<Response<PostResponse>>
     {
         public UpdatePostCommand()
         {

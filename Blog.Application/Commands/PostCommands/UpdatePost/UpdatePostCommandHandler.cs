@@ -1,12 +1,11 @@
 ﻿using Blog.Application.Responses;
-using Blog.Application.ViewModels;
 using Blog.Domain.AggregatesModel.PostAggregate;
 using Blog.Infrastructure.Services.BlobStorage;
 using MediatR;
 
 namespace Blog.Application.Commands.PostCommands.UpdatePost
 {
-    public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, Response<PostViewModel>>
+    public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, Response<PostResponse>>
     {
         private readonly IPostRepository postRepository;
         private readonly IFileStorageService fileStorageService;
@@ -16,14 +15,14 @@ namespace Blog.Application.Commands.PostCommands.UpdatePost
             this.fileStorageService = fileStorageService;
         }
 
-        public async Task<Response<PostViewModel>> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
+        public async Task<Response<PostResponse>> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
         {
             string coverImageUrl = null;
             var post = await postRepository.GetByIdAsync(request.Id);
 
             if (post == null)
             {
-                return Response<PostViewModel>.NotFound();
+                return Response<PostResponse>.NotFound();
             }
 
             if (request.CoverImage != null)
@@ -38,9 +37,9 @@ namespace Blog.Application.Commands.PostCommands.UpdatePost
 
             await postRepository.UnitOfWork.SaveChangesAsync();
 
-            var postViewModel = new PostViewModel { Title = post.Title, Content = post.Content, CoverImageUrl = post.CoverImageUrl, CreatedAt = post.CreatedAt, UpdatedAt = post.UpdatedAt };
+            var postViewModel = new PostResponse { Title = post.Title, Content = post.Content, CoverImageUrl = post.CoverImageUrl, CreatedAt = post.CreatedAt, UpdatedAt = post.UpdatedAt };
 
-            return Response<PostViewModel>.Success(postViewModel);
+            return Response<PostResponse>.Success(postViewModel);
 
         }
     }

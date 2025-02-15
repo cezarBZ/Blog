@@ -1,11 +1,11 @@
-﻿using Blog.Application.ViewModels;
+﻿using Blog.Application.Responses;
 using Blog.Domain.AggregatesModel.UserAggregate;
 using Blog.Domain.Core.Auth;
 using MediatR;
 
 namespace Blog.Application.Commands.UserCommands.LoginUser
 {
-    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUserViewModel>
+    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUserResponse>
     {
         private readonly IAuthService _authService;
         private readonly IUserRepository _userRepository;
@@ -14,7 +14,7 @@ namespace Blog.Application.Commands.UserCommands.LoginUser
             _authService = authService;
             _userRepository = userRepository;
         }
-        async Task<LoginUserViewModel> IRequestHandler<LoginUserCommand, LoginUserViewModel>.Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        async Task<LoginUserResponse> IRequestHandler<LoginUserCommand, LoginUserResponse>.Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var passwordHash = _authService.ComputeSha256Hash(request.Password);
             var user = await _userRepository.GetUserByEmailAndPasswordAsync(request.Email, passwordHash);
@@ -27,7 +27,7 @@ namespace Blog.Application.Commands.UserCommands.LoginUser
             user.RegisterLogin();
             _userRepository.Update(user);
             await _userRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-            return new LoginUserViewModel(user.Email, token);
+            return new LoginUserResponse(user.Email, token);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Blog.Application.Responses;
-using Blog.Application.ViewModels;
 using Blog.Domain.AggregatesModel.CommentAggregate;
 using MediatR;
 
@@ -29,7 +28,7 @@ namespace Blog.Application.Queries.CommentQueries.GetCommentsByPostId
             {
                 PostId = request.PostId,
                 TotalComments = commentsCount,
-                Comments = comments.Select(c => new PostCommentViewModel
+                Comments = comments.Select(c => new PostCommentResponse
                 {
                     CommentId = c.Id,
                     UserId = c.UserId,

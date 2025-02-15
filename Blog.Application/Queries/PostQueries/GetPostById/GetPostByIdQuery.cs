@@ -1,10 +1,9 @@
 ﻿using Blog.Application.Responses;
-using Blog.Application.ViewModels;
 using MediatR;
 
 namespace Blog.Application.Queries.PostQueries.GetPostById
 {
-    public class GetPostByIdQuery : IRequest<Response<PostViewModel>>
+    public class GetPostByIdQuery : IRequest<Response<PostResponse>>
     {
         public GetPostByIdQuery(int id)
         {

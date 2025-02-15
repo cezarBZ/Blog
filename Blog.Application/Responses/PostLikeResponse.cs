@@ -1,4 +1,4 @@
-public class PostLikeViewModel
+public class PostLikeResponse
 {
     public int LikeId { get; set; }
     public int UserId { get; set; }

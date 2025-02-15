@@ -1,11 +1,10 @@
 ﻿using Blog.Application.Responses;
-using Blog.Application.ViewModels;
 using Blog.Domain.AggregatesModel.UserAggregate;
 using MediatR;
 
 namespace Blog.Application.Queries.UserQueries
 {
-    public class GetFollowedQueryHandler : IRequestHandler<GetFollowedQuery, Response<IReadOnlyList<UserViewModel>>>
+    public class GetFollowedQueryHandler : IRequestHandler<GetFollowedQuery, Response<IReadOnlyList<UserResponse>>>
     {
         private readonly IUserRepository _userRepository;
 
@@ -14,17 +13,17 @@ namespace Blog.Application.Queries.UserQueries
             _userRepository = userRepository;
         }
 
-        public async Task<Response<IReadOnlyList<UserViewModel>>> Handle(GetFollowedQuery request, CancellationToken cancellationToken)
+        public async Task<Response<IReadOnlyList<UserResponse>>> Handle(GetFollowedQuery request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByIdAsync(request.UserId);
             if (user == null)
             {
-                return Response<IReadOnlyList<UserViewModel>>.NotFound("Usuário não encontrado.");
+                return Response<IReadOnlyList<UserResponse>>.NotFound("Usuário não encontrado.");
             }
 
             var followed = await _userRepository.GetFollowedAsync(request.UserId);
 
-            var followedViewModel = followed.Select(f => new UserViewModel
+            var followedViewModel = followed.Select(f => new UserResponse
             {
                 Id = f.Id,
                 Email = f.Email,
@@ -32,7 +31,7 @@ namespace Blog.Application.Queries.UserQueries
                 ProfilePictureUrl = f.ProfilePictureUrl
             }).ToList();
 
-            return Response<IReadOnlyList<UserViewModel>>.Success(followedViewModel);
+            return Response<IReadOnlyList<UserResponse>>.Success(followedViewModel);
         }
     }
 }

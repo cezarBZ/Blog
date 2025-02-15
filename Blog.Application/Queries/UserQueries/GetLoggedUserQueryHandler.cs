@@ -1,12 +1,11 @@
 ﻿using Blog.Application.Responses;
 using Blog.Application.Services;
-using Blog.Application.ViewModels;
 using Blog.Domain.AggregatesModel.UserAggregate;
 using MediatR;
 
 namespace Blog.Application.Queries.UserQueries
 {
-    public class GetLoggedUserQueryHandler : IRequestHandler<GetLoggedUserQuery, Response<UserViewModel>>
+    public class GetLoggedUserQueryHandler : IRequestHandler<GetLoggedUserQuery, Response<UserResponse>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserContextService _userContextService;
@@ -15,17 +14,17 @@ namespace Blog.Application.Queries.UserQueries
             _userRepository = userRepository;
             _userContextService = userContextService;
         }
-        public async Task<Response<UserViewModel>> Handle(GetLoggedUserQuery request, CancellationToken cancellationToken)
+        public async Task<Response<UserResponse>> Handle(GetLoggedUserQuery request, CancellationToken cancellationToken)
         {
             var userId = _userContextService.GetUserId().Value;
             var user = await _userRepository.GetByIdAsync(userId);
             
             if (user == null)
             {
-                return Response<UserViewModel>.Failure("User not found.");
+                return Response<UserResponse>.Failure("User not found.");
             }
 
-            var userViewModel = new UserViewModel
+            var userViewModel = new UserResponse
             {
                 Id = user.Id,
                 Username = user.Username,
@@ -33,7 +32,7 @@ namespace Blog.Application.Queries.UserQueries
                 ProfilePictureUrl = user.ProfilePictureUrl
             };
 
-            return Response<UserViewModel>.Success(userViewModel);
+            return Response<UserResponse>.Success(userViewModel);
         }
     }
 }

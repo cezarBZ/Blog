@@ -3,7 +3,7 @@
     public class PostLikesResponse
     {
         public int PostId { get; set; }
-        public List<PostLikeViewModel> Likes { get; set; } = new List<PostLikeViewModel>();
+        public List<PostLikeResponse> Likes { get; set; } = new List<PostLikeResponse>();
         public int TotalLikes { get; set; }
     }
 }

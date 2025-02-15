@@ -1,6 +1,6 @@
-﻿namespace Blog.Application.ViewModels;
+﻿namespace Blog.Application.Responses;
 
-public class CommentViewModel
+public class CommentsResponse
 {
     public int Id { get; set; }
     public int UserId { get; set; }
