@@ -1,4 +1,5 @@
-﻿using Blog.Application.Commands.LikeCommands.Dislike;
+﻿using Blog.Application.Commands.LikeCommands.DislikeComment;
+using Blog.Application.Commands.LikeCommands.DislikePost;
 using Blog.Application.Commands.LikeCommands.LikeComment;
 using Blog.Application.Commands.LikeCommands.LikePost;
 using MediatR;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class LikeController : ControllerBase
     {
@@ -17,7 +18,7 @@ namespace Blog.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("post/{postId}")]
+        [HttpPost("like/post/{postId}")]
         public async Task<IActionResult> LikePost(int postId)
         {
             var command = new LikePostCommand { postId = postId };
@@ -30,10 +31,10 @@ namespace Blog.API.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("{Id}")]
-        public async Task<IActionResult> Dislike(int Id)
+        [HttpDelete("dislike/post/{postId}")]
+        public async Task<IActionResult> DislikePost(int postId)
         {
-            var command = new DislikeCommand { Id = Id };
+            var command = new DislikePostCommand { PostId = postId };
             var response = await _mediator.Send(command);
 
             if (!response.IsSuccess)
@@ -43,7 +44,20 @@ namespace Blog.API.Controllers
             return Ok(response);
         }
 
-        [HttpPost("comment/{commentId}")]
+        [HttpDelete("dislike/comment/{commentId}")]
+        public async Task<IActionResult> DislikeComment(int commentId)
+        {
+            var command = new DislikeCommentCommand { CommentId = commentId };
+            var response = await _mediator.Send(command);
+
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("like/comment/{commentId}")]
         public async Task<IActionResult> LikeComment(int commentId)
         {
             var command = new LikeCommentCommand { commentId = commentId };

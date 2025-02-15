@@ -36,4 +36,13 @@ public class Comment : Entity<int>, IAggregateRoot
         UpdatedAt = DateTime.UtcNow;
     }
 
+    public void IncrementLikeCount()
+    {
+        LikeCount++;
+    }
+
+    public void DecrementLikeCount()
+    {
+        LikeCount--;
+    }
 }

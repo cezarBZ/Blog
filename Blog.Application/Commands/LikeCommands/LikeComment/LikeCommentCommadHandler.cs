@@ -1,6 +1,7 @@
 ﻿using Blog.Application.Commands.LikeCommands.LikePost;
 using Blog.Application.Responses;
 using Blog.Application.Services;
+using Blog.Domain.AggregatesModel.CommentAggregate;
 using Blog.Domain.AggregatesModel.LikeAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -13,11 +14,13 @@ namespace Blog.Application.Commands.LikeCommands.LikeComment
 
         private readonly ILikeRepository _likeRepository;
         private readonly IUserContextService _userContextService;
+        private readonly ICommentRepository _commentRepository;
 
-        public LikeCommentCommadHandler(ILikeRepository likeRepository, IHttpContextAccessor httpContextAccessor, IUserContextService userContextService)
+        public LikeCommentCommadHandler(ILikeRepository likeRepository, IHttpContextAccessor httpContextAccessor, IUserContextService userContextService, ICommentRepository commentRepository)
         {
             _likeRepository = likeRepository;
             _userContextService = userContextService;
+            _commentRepository = commentRepository;
         }
         public async Task<Response<Unit>> Handle(LikeCommentCommand request, CancellationToken cancellationToken)
         {
@@ -27,6 +30,12 @@ namespace Blog.Application.Commands.LikeCommands.LikeComment
                 return new Response<Unit>(false, "Usuário não encontrado.");
             }
 
+            var comment = await _commentRepository.GetByIdAsync(request.commentId);
+            if (comment == null)
+            {
+                return new Response<Unit>(false, "Comment não encontrado.");
+            }
+
             var existingLike = await _likeRepository.GetLikeByUserIdAndTargetIdAsync(userId.Value, request.commentId, LikeTargetType.Comment);
             if (existingLike != null)
             {
@@ -34,7 +43,10 @@ namespace Blog.Application.Commands.LikeCommands.LikeComment
             }
 
             var like = new Like(request.commentId, userId.Value, LikeTargetType.Comment);
+
+            comment.IncrementLikeCount();
             await _likeRepository.AddAsync(like);
+            _commentRepository.Update(comment);
 
             await _likeRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 

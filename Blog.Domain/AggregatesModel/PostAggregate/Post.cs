@@ -33,4 +33,14 @@ public class Post : Entity<int>, IAggregateRoot
         UpdatedAt = DateTime.UtcNow;
     }
 
+    public void IncrementLikeCount()
+    {
+        LikeCount++;
+    }
+
+    public void DecrementLikeCount()
+    {
+        LikeCount--;
+    }
+
 }

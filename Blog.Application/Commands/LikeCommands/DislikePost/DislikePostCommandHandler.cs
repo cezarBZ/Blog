@@ -5,49 +5,46 @@ using Blog.Domain.AggregatesModel.PostAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace Blog.Application.Commands.LikeCommands.LikePost
+namespace Blog.Application.Commands.LikeCommands.DislikePost
 {
-    public class LikePostCommandHandler : IRequestHandler<LikePostCommand, Response<Unit>>
+    internal class DislikePostCommandHandler : IRequestHandler<DislikePostCommand, Response<Unit>>
     {
         private readonly ILikeRepository _likeRepository;
         private readonly IUserContextService _userContextService;
         private readonly IPostRepository _postRepository;
 
-        public LikePostCommandHandler(ILikeRepository likeRepository, IHttpContextAccessor httpContextAccessor, IUserContextService userContextService, IPostRepository postRepository)
+        public DislikePostCommandHandler(ILikeRepository likeRepository, IHttpContextAccessor httpContextAccessor, IUserContextService userContextService, IPostRepository postRepository)
         {
             _likeRepository = likeRepository;
             _userContextService = userContextService;
             _postRepository = postRepository;
         }
-        public async Task<Response<Unit>> Handle(LikePostCommand request, CancellationToken cancellationToken)
+        public async Task<Response<Unit>> Handle(DislikePostCommand request, CancellationToken cancellationToken)
         {
             var userId = _userContextService.GetUserId();
             if (userId == null)
             {
                 return new Response<Unit>(false, "Usuário não encontrado.");
             }
-
-            var post = await _postRepository.GetByIdAsync(request.postId);
+            var post = await _postRepository.GetByIdAsync(request.PostId);
             if (post == null)
             {
                 return new Response<Unit>(false, "Post não encontrado.");
             }
 
-            var existingLike = await _likeRepository.GetLikeByUserIdAndTargetIdAsync(userId.Value, request.postId, LikeTargetType.Post);
-            if (existingLike != null)
+            var like = await _likeRepository.GetLikeByUserIdAndTargetIdAsync(userId.Value, request.PostId, LikeTargetType.Post);
+            if (like == null)
             {
-                return new Response<Unit>(false, "Você já curtiu este post.");
+                return new Response<Unit>(false, "Você ainda não curtiu esse post.");
             }
 
-            var like = new Like(request.postId, userId.Value, LikeTargetType.Post);
-            post.IncrementLikeCount();
-
-            await _likeRepository.AddAsync(like);
+            post.DecrementLikeCount();
+            _likeRepository.Delete(like);
             _postRepository.Update(post);
 
             await _likeRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Response<Unit>.Success(Unit.Value, "Post curtido com sucesso.");
+            return Response<Unit>.Success(Unit.Value, "Post descurtido com sucesso.");
         }
     }
 }
