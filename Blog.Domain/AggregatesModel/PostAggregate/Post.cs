@@ -27,16 +27,6 @@ public class Post : Entity<int>, IAggregateRoot
     public int CreatedBy { get; private set; }
     public void Edit(string newTitle, string newContent, string newCoverImageUrl)
     {
-        if (string.IsNullOrWhiteSpace(newTitle))
-        {
-            throw new ArgumentException("Post title can not be empty.", nameof(newTitle));
-        }
-
-        if (string.IsNullOrWhiteSpace(newContent))
-        {
-            throw new ArgumentException("Post content can not be empty.", nameof(newContent));
-        }
-
         Content = newContent;
         Title = newTitle;
         CoverImageUrl = newCoverImageUrl ?? CoverImageUrl;

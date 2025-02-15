@@ -1,6 +1,8 @@
 ﻿using Blog.Application.Commands.PostCommands.CreatePost;
+using Blog.Application.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
-using System.Reflection;
 
 namespace Blog.API.IoC
 {
@@ -11,6 +13,7 @@ namespace Blog.API.IoC
         {
 
             services.AddMediatR(typeof(CreatePostCommand));
+            services.AddFluentValidationAutoValidation().AddValidatorsFromAssemblyContaining<CreateCommentValidator>();
 
             return services;
         }
