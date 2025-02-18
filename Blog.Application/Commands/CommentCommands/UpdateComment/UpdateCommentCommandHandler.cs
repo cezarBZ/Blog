@@ -11,7 +11,7 @@ namespace Blog.Application.Commands.CommentCommands.UpdateComment
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IUserContextService _userContextService;
-        public UpdateCommentCommandHandler(IPostRepository postRepository, IUserContextService userContextService, ICommentRepository commentRepository)
+        public UpdateCommentCommandHandler(IUserContextService userContextService, ICommentRepository commentRepository)
         {
             _userContextService = userContextService;
             _commentRepository = commentRepository;
@@ -26,7 +26,7 @@ namespace Blog.Application.Commands.CommentCommands.UpdateComment
                 return Response<Unit>.NotFound("Comentário não encontrado");
 
             if (comment.UserId != user.Id)
-                return Response<Unit>.Failure("VocÊ não pode editar um comentário de outro usuário");
+                return Response<Unit>.Failure("Você não pode editar um comentário de outro usuário");
 
 
             comment.Edit(request.Content);
