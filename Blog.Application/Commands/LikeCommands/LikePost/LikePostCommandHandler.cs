@@ -3,7 +3,6 @@ using Blog.Application.Services;
 using Blog.Domain.AggregatesModel.LikeAggregate;
 using Blog.Domain.AggregatesModel.PostAggregate;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 
 namespace Blog.Application.Commands.LikeCommands.LikePost
 {
@@ -13,7 +12,7 @@ namespace Blog.Application.Commands.LikeCommands.LikePost
         private readonly IUserContextService _userContextService;
         private readonly IPostRepository _postRepository;
 
-        public LikePostCommandHandler(ILikeRepository likeRepository, IHttpContextAccessor httpContextAccessor, IUserContextService userContextService, IPostRepository postRepository)
+        public LikePostCommandHandler(ILikeRepository likeRepository, IUserContextService userContextService, IPostRepository postRepository)
         {
             _likeRepository = likeRepository;
             _userContextService = userContextService;
@@ -24,19 +23,19 @@ namespace Blog.Application.Commands.LikeCommands.LikePost
             var userId = _userContextService.GetUserId();
             if (userId == null)
             {
-                return new Response<Unit>(false, "Usuário não encontrado.");
+                return Response<Unit>.Failure("Usuário não logado.");
             }
 
             var post = await _postRepository.GetByIdAsync(request.postId);
             if (post == null)
             {
-                return new Response<Unit>(false, "Post não encontrado.");
+                return Response<Unit>.NotFound("Post não encontrado.");
             }
 
             var existingLike = await _likeRepository.GetLikeByUserIdAndTargetIdAsync(userId.Value, request.postId, LikeTargetType.Post);
             if (existingLike != null)
             {
-                return new Response<Unit>(false, "Você já curtiu este post.");
+                return Response<Unit>.Failure("Você já curtiu este post.");
             }
 
             var like = new Like(request.postId, userId.Value, LikeTargetType.Post);

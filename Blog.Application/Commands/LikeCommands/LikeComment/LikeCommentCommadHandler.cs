@@ -1,5 +1,4 @@
-﻿using Blog.Application.Commands.LikeCommands.LikePost;
-using Blog.Application.Responses;
+﻿using Blog.Application.Responses;
 using Blog.Application.Services;
 using Blog.Domain.AggregatesModel.CommentAggregate;
 using Blog.Domain.AggregatesModel.LikeAggregate;
@@ -9,14 +8,14 @@ using Microsoft.AspNetCore.Http;
 
 namespace Blog.Application.Commands.LikeCommands.LikeComment
 {
-    internal class LikeCommentCommadHandler : IRequestHandler<LikeCommentCommand, Response<Unit>>
+    public class LikeCommentCommandHandler : IRequestHandler<LikeCommentCommand, Response<Unit>>
     {
 
         private readonly ILikeRepository _likeRepository;
         private readonly IUserContextService _userContextService;
         private readonly ICommentRepository _commentRepository;
 
-        public LikeCommentCommadHandler(ILikeRepository likeRepository, IHttpContextAccessor httpContextAccessor, IUserContextService userContextService, ICommentRepository commentRepository)
+        public LikeCommentCommandHandler(ILikeRepository likeRepository, IUserContextService userContextService, ICommentRepository commentRepository)
         {
             _likeRepository = likeRepository;
             _userContextService = userContextService;
@@ -27,7 +26,7 @@ namespace Blog.Application.Commands.LikeCommands.LikeComment
             var userId = _userContextService.GetUserId();
             if (userId == null)
             {
-                return new Response<Unit>(false, "Usuário não encontrado.");
+                return new Response<Unit>(false, "Usuário não logado.");
             }
 
             var comment = await _commentRepository.GetByIdAsync(request.commentId);

@@ -28,7 +28,7 @@ namespace Blog.Application.Commands.CommentCommands.CreateComment
             var post = await _postRepository.GetByIdAsync(request.postId);
             if (post == null)
             {
-                return new Response<Unit>(false, "Post não encontrado.");
+                return Response<Unit>.NotFound("Post não encontrado.");
             }
 
             var comment = new Comment(request.Content, request.postId, userId.Value);
