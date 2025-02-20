@@ -7,7 +7,7 @@ using Blog.Domain.AggregatesModel.PostAggregate;
 using Moq;
 using System.ComponentModel.Design;
 
-namespace Blog.Tests.Unit.Application.Commands
+namespace Blog.Tests.Unit.Application.Commands.LikeCommands
 {
     public class LikeCommentCommandHandlerTests
     {
@@ -47,22 +47,6 @@ namespace Blog.Tests.Unit.Application.Commands
             Assert.True(result.IsSuccess);
             Assert.Equal(1, comment.LikeCount);
             Assert.Equal("Comentário curtido com sucesso.", result.Message);
-        }
-
-        [Fact]
-        public async Task Handle_UserNotLoggedIn_ShouldReturnFailure()
-        {
-            var commentId = 1;
-
-            var command = new LikeCommentCommand { commentId = commentId };
-
-            _userContextServiceMock.Setup(u => u.GetUserId()).Returns((int?)null);
-
-            var result = await _handler.Handle(command, CancellationToken.None);
-
-            Assert.NotNull(result);
-            Assert.False(result.IsSuccess);
-            Assert.Equal("Usuário não logado.", result.Message);
         }
 
         [Fact]

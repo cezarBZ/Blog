@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace Blog.Application.Commands.LikeCommands.DislikePost
 {
-    internal class DislikePostCommandHandler : IRequestHandler<DislikePostCommand, Response<Unit>>
+    public class DislikePostCommandHandler : IRequestHandler<DislikePostCommand, Response<Unit>>
     {
         private readonly ILikeRepository _likeRepository;
         private readonly IUserContextService _userContextService;
         private readonly IPostRepository _postRepository;
 
-        public DislikePostCommandHandler(ILikeRepository likeRepository, IHttpContextAccessor httpContextAccessor, IUserContextService userContextService, IPostRepository postRepository)
+        public DislikePostCommandHandler(ILikeRepository likeRepository, IUserContextService userContextService, IPostRepository postRepository)
         {
             _likeRepository = likeRepository;
             _userContextService = userContextService;
@@ -22,10 +22,7 @@ namespace Blog.Application.Commands.LikeCommands.DislikePost
         public async Task<Response<Unit>> Handle(DislikePostCommand request, CancellationToken cancellationToken)
         {
             var userId = _userContextService.GetUserId();
-            if (userId == null)
-            {
-                return new Response<Unit>(false, "Usuário não encontrado.");
-            }
+
             var post = await _postRepository.GetByIdAsync(request.PostId);
             if (post == null)
             {

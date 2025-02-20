@@ -2,10 +2,12 @@
 using Blog.Application.Commands.CommentCommands.DeleteComment;
 using Blog.Application.Commands.CommentCommands.UpdateComment;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CommentController : ControllerBase
@@ -28,7 +30,6 @@ namespace Blog.API.Controllers
 
             return Ok(response.Message);
         }
-
         [HttpPut("{Id}")]
         public async Task<IActionResult> Update(int Id, [FromBody] UpdateCommentCommand command)
         {

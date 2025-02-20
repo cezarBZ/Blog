@@ -4,7 +4,7 @@ using Blog.Domain.AggregatesModel.CommentAggregate;
 using Blog.Domain.AggregatesModel.UserAggregate;
 using Moq;
 
-namespace Blog.Tests.Unit.Application.Commands
+namespace Blog.Tests.Unit.Application.Commands.CommentCommands
 {
     public class UpdateCommentCommandHandlerTests
     {
@@ -37,7 +37,7 @@ namespace Blog.Tests.Unit.Application.Commands
             var result = await _handler.Handle(command, CancellationToken.None);
 
             Assert.True(result.IsSuccess);
-            
+
             Assert.Equal("Comentário editado com sucesso", result.Message);
             Assert.Equal("Comentário atualizado", comment.Content);
             _commentRepositoryMock.Verify(x => x.Update(It.IsAny<Comment>()), Times.Once);
@@ -55,7 +55,7 @@ namespace Blog.Tests.Unit.Application.Commands
 
             _commentRepositoryMock.Setup(x => x.GetByIdAsync(commentId)).ReturnsAsync(default(Comment));
             _userContextServiceMock.Setup(x => x.GetUserAsync()).ReturnsAsync(user);
-            
+
             var result = await _handler.Handle(command, CancellationToken.None);
 
             Assert.False(result.IsSuccess);

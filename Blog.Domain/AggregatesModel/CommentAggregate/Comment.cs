@@ -43,6 +43,9 @@ public class Comment : Entity<int>, IAggregateRoot
 
     public void DecrementLikeCount()
     {
+        if (LikeCount == 0)
+            return;
+
         LikeCount--;
     }
 }

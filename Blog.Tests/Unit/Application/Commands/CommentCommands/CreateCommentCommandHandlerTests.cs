@@ -4,7 +4,7 @@ using Blog.Domain.AggregatesModel.CommentAggregate;
 using Blog.Domain.AggregatesModel.PostAggregate;
 using Moq;
 
-namespace Blog.Tests.Unit.Application.Commands
+namespace Blog.Tests.Unit.Application.Commands.CommentCommands
 {
     public class CreateCommentCommandHandlerTests
     {
@@ -43,19 +43,6 @@ namespace Blog.Tests.Unit.Application.Commands
             _commentRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Comment>()), Times.Once);
             _postRepositoryMock.Verify(x => x.Update(It.IsAny<Post>()), Times.Once);
             _commentRepositoryMock.Verify(x => x.UnitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task Handle_UserNotLoggedIn_ShouldReturnNotFound()
-        {
-            var command = new CreateCommentCommand { Content = "Novo comentário", postId = 1 };
-
-            _userContextServiceMock.Setup(x => x.GetUserId()).Returns((int?)null);
-
-            var result = await _handler.Handle(command, CancellationToken.None);
-
-            Assert.False(result.IsSuccess);
-            Assert.Equal("Usuário não está logado.", result.Message);
         }
 
         [Fact]

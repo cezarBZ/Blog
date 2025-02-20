@@ -3,7 +3,6 @@ using Blog.Application.Services;
 using Blog.Domain.AggregatesModel.CommentAggregate;
 using Blog.Domain.AggregatesModel.LikeAggregate;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 
 
 namespace Blog.Application.Commands.LikeCommands.LikeComment
@@ -24,11 +23,7 @@ namespace Blog.Application.Commands.LikeCommands.LikeComment
         public async Task<Response<Unit>> Handle(LikeCommentCommand request, CancellationToken cancellationToken)
         {
             var userId = _userContextService.GetUserId();
-            if (userId == null)
-            {
-                return new Response<Unit>(false, "Usuário não logado.");
-            }
-
+            
             var comment = await _commentRepository.GetByIdAsync(request.commentId);
             if (comment == null)
             {

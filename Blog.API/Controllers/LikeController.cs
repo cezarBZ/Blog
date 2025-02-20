@@ -3,10 +3,12 @@ using Blog.Application.Commands.LikeCommands.DislikePost;
 using Blog.Application.Commands.LikeCommands.LikeComment;
 using Blog.Application.Commands.LikeCommands.LikePost;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Controllers
 {
+    [Authorize]
     [Route("api/")]
     [ApiController]
     public class LikeController : ControllerBase

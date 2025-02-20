@@ -22,8 +22,6 @@ namespace Blog.Application.Commands.CommentCommands.CreateComment
         public async Task<Response<Unit>> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
         {
             var userId = _userContextService.GetUserId();
-            if (userId == null)
-                return Response<Unit>.NotFound("Usuário não está logado.");
 
             var post = await _postRepository.GetByIdAsync(request.postId);
             if (post == null)

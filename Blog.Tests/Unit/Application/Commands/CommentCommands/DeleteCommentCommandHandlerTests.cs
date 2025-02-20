@@ -3,7 +3,7 @@ using Blog.Domain.AggregatesModel.CommentAggregate;
 using Blog.Domain.AggregatesModel.PostAggregate;
 using Moq;
 
-namespace Blog.Tests.Unit.Application.Commands
+namespace Blog.Tests.Unit.Application.Commands.CommentCommands
 {
     public class DeleteCommentCommandHandlerTests
     {
