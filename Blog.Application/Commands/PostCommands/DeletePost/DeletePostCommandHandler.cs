@@ -19,7 +19,7 @@ namespace Blog.Application.Commands.PostCommands.DeletePost
 
             if (post == null)
             {
-                return Response<Unit>.NotFound();
+                return Response<Unit>.NotFound("Post not found.");
             }
 
             repository.Delete(post);

@@ -22,7 +22,7 @@ namespace Blog.Application.Commands.PostCommands.UpdatePost
 
             if (post == null)
             {
-                return Response<PostResponse>.NotFound();
+                return Response<PostResponse>.NotFound("Post not found");
             }
 
             if (request.CoverImage != null)
@@ -39,7 +39,7 @@ namespace Blog.Application.Commands.PostCommands.UpdatePost
 
             var postViewModel = new PostResponse { Title = post.Title, Content = post.Content, CoverImageUrl = post.CoverImageUrl, CreatedAt = post.CreatedAt, UpdatedAt = post.UpdatedAt };
 
-            return Response<PostResponse>.Success(postViewModel);
+            return Response<PostResponse>.Success(postViewModel, "Post updated successfuly");
 
         }
     }
