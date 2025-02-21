@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Blog.Application.Commands.UserCommands.CreateUser
 {
-    internal class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response<int>>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response<int>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IAuthService _authService;

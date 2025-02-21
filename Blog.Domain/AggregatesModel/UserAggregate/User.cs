@@ -19,8 +19,14 @@ public class User : Entity<int>, IAggregateRoot
         FollowingCount = 0;
         ProfilePictureUrl = profilePictureUrl;
     }
+    // Novo construtor para testes
+    public User(int id, string username, string email, string passwordHash, bool active, string role, string profilePictureUrl)
+        : this(username, email, passwordHash, active, role, profilePictureUrl)
+    {
+        Id = id; // Define o Id diretamente
+    }
 
-    public string Username { get; private set; }
+    public string Username { get; set; }
     public string Email { get; private set; }
     public string PasswordHash { get; private set; }
     public bool Active { get; set; }
@@ -68,6 +74,7 @@ public class User : Entity<int>, IAggregateRoot
         Following.Add(userFollower);
         FollowingCount++;
         userToFollow.Followers.Add(userFollower);
+        userToFollow.IncrementFollowersCount();
     }
 
     public void Unfollow(User userToUnfollow)
@@ -82,6 +89,7 @@ public class User : Entity<int>, IAggregateRoot
         Following.Remove(userFollower);
         FollowingCount--;
         userToUnfollow.Followers.Remove(userFollower);
+        userToUnfollow.DecrementFollowersCount();
     }
 
     public void IncrementFollowersCount()
@@ -91,6 +99,7 @@ public class User : Entity<int>, IAggregateRoot
 
     public void DecrementFollowersCount()
     {
-        FollowersCount--;
+        if (FollowersCount > 0)
+            FollowersCount--;
     }
 }

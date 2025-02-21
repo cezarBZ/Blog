@@ -19,27 +19,20 @@ namespace Blog.Application.Commands.UserCommands.Unfollow
         public async Task<Response<Unit>> Handle(UnfollowUserCommand request, CancellationToken cancellationToken)
         {
             var followerId = _userContextService.GetUserId();
-
-            if (followerId == null)
-            {
-                return Response<Unit>.Failure("User is not logged in.");
-            }
-
             var follower = await _userRepository.GetByIdWithFollowedAsync(followerId.Value);
-            
 
             if (follower == null)
                 return Response<Unit>.Failure("Follower not found.");
 
-            var userToFollow = await _userRepository.GetByIdAsync(request.FollowedId);
-            if (userToFollow == null)
-                throw new KeyNotFoundException("User to unfollow not found.");
+            var userToUnfollow = await _userRepository.GetByIdAsync(request.FollowedId);
+            if (userToUnfollow == null)
+                return Response<Unit>.Failure("User to unfollow not found.");
 
-            follower.Unfollow(userToFollow);
-            userToFollow.DecrementFollowersCount();
+
+            follower.Unfollow(userToUnfollow);
 
             _userRepository.Update(follower);
-            _userRepository.Update(userToFollow);
+            _userRepository.Update(userToUnfollow);
             await _userRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
             return Response<Unit>.Success(Unit.Value, "Successfully unfollowed the user.");

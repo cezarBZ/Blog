@@ -19,12 +19,6 @@ namespace Blog.Application.Commands.UserCommands.Follow
         public async Task<Response<Unit>> Handle(FollowUserCommand request, CancellationToken cancellationToken)
         {
             var followerId = _userContextService.GetUserId();
-
-            if (followerId == null)
-            {
-                return Response<Unit>.Failure("User is not logged in.");
-            }
-
             var follower = await _userRepository.GetByIdAsync(followerId.Value);
 
             if (follower == null)
@@ -35,7 +29,6 @@ namespace Blog.Application.Commands.UserCommands.Follow
                 return Response<Unit>.Failure("User to follow not found.");
 
             follower.Follow(userToFollow);
-            userToFollow.IncrementFollowersCount();
 
             _userRepository.Update(follower);
             _userRepository.Update(userToFollow);

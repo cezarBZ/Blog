@@ -42,10 +42,8 @@ public class Post : Entity<int>, IAggregateRoot
 
     public void DecrementLikeCount()
     {
-        if (LikeCount == 0)
-            return;
-
-        LikeCount--;
+        if (LikeCount > 0)
+            LikeCount--;
     }
 
     public void IncrementCommentCount()
@@ -55,10 +53,8 @@ public class Post : Entity<int>, IAggregateRoot
 
     public void DecrementCommentCount()
     {
-        if (CommentCount == 0)
-            return;
-
-        CommentCount--;
+        if (CommentCount > 0)
+            CommentCount--;
     }
 
 }

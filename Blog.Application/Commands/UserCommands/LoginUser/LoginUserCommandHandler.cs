@@ -14,7 +14,7 @@ namespace Blog.Application.Commands.UserCommands.LoginUser
             _authService = authService;
             _userRepository = userRepository;
         }
-        async Task<LoginUserResponse> IRequestHandler<LoginUserCommand, LoginUserResponse>.Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task<LoginUserResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var passwordHash = _authService.ComputeSha256Hash(request.Password);
             var user = await _userRepository.GetUserByEmailAndPasswordAsync(request.Email, passwordHash);
