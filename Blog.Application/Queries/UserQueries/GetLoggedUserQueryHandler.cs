@@ -18,11 +18,6 @@ namespace Blog.Application.Queries.UserQueries
         {
             var userId = _userContextService.GetUserId().Value;
             var user = await _userRepository.GetByIdAsync(userId);
-            
-            if (user == null)
-            {
-                return Response<UserResponse>.Failure("User not found.");
-            }
 
             var userViewModel = new UserResponse
             {
