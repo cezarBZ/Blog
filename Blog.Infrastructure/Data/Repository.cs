@@ -1,5 +1,4 @@
-﻿using Blog.Domain.AggregatesModel.UserAggregate;
-using Blog.Domain.Core.Data;
+﻿using Blog.Domain.Core.Data;
 using Blog.Domain.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
