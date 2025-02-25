@@ -1,6 +1,4 @@
 ﻿using Blog.Domain.AggregatesModel.CommentAggregate;
-using Blog.Domain.AggregatesModel.LikeAggregate;
-using Blog.Domain.AggregatesModel.PostAggregate;
 using Blog.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
