@@ -26,7 +26,6 @@ public class PostController : ControllerBase
     //[Authorize]
     public async Task<IActionResult> GetAll()
     {
-
         var cmd = await _mediator.Send(new GetAllPostsQuery());
 
         if (!cmd.IsFound)
@@ -54,7 +53,7 @@ public class PostController : ControllerBase
     [HttpGet("{postId}/comments")]
     public async Task<IActionResult> GetPostComments(int postId)
     {
-        var query = new GetCommentsByPostIdQuery { PostId = postId };
+        var query = new GetCommentsByPostIdQuery(postId);
         var response = await _mediator.Send(query);
 
         if (!response.IsSuccess)
@@ -67,7 +66,7 @@ public class PostController : ControllerBase
     [HttpGet("{postId}/likes")]
     public async Task<IActionResult> GetPostLikes(int postId)
     {
-        var query = new GetLikesByPostIdQuery { PostId = postId };
+        var query = new GetLikesByPostIdQuery(postId);
         var response = await _mediator.Send(query);
 
         if (!response.IsSuccess)
