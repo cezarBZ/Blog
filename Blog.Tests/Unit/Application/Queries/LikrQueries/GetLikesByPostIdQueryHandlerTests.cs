@@ -20,7 +20,7 @@ namespace Blog.Tests.Unit.Application.Queries.LikrQueries
         [Fact]
         public async Task Handle_ShouldReturnComments_WhenCommentsExist()
         {
-            var user1 = new User(1, "User1", "user1@example.com", "hash", true, "User", "url");
+            var user1 = new User(1, "User1", "user1@example.com", "hash", true, UserRole.User, "url");
             var postId = 1;
             var like1 = new Like(postId, user1.Id, LikeTargetType.Post);
             var like2 = new Like(postId, user1.Id, LikeTargetType.Post);

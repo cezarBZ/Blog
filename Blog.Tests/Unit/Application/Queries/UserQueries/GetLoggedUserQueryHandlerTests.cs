@@ -19,7 +19,7 @@ namespace Blog.Tests.Unit.Application.Queries.UserQueries
         [Fact]
         public async Task Handle_ShouldReturnUser_WhenUserExists()
         {
-            var user = new User("email", "username", "password", true, "User", "url");
+            var user = new User("email", "username", "password", true, UserRole.User, "url");
 
             _userContextService
                 .Setup(service => service.GetUserId())

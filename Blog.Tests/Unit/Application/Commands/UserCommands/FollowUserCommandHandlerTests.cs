@@ -23,9 +23,9 @@ namespace Blog.Tests.Unit.Application.Commands.UserCommands
         {
             var followerId = 1;
             var followedId = 2;
-            var follower = new User(followerId, "Username", "Email", "Password", true, "Role", "CoverImageUrl");
+            var follower = new User(followerId, "Username", "Email", "Password", true, UserRole.User, "CoverImageUrl");
 
-            var followed = new User(followedId, "Username", "Email", "Password", true, "Role", "CoverImageUrl");
+            var followed = new User(followedId, "Username", "Email", "Password", true, UserRole.User, "CoverImageUrl");
 
             var command = new FollowUserCommand(followedId);
 
@@ -65,7 +65,7 @@ namespace Blog.Tests.Unit.Application.Commands.UserCommands
         {
             var followerId = 1;
             var followedId = 2;
-            var follower = new User("Username", "Email", "Password", true, "Role", "CoverImageUrl");
+            var follower = new User("Username", "Email", "Password", true, UserRole.User, "CoverImageUrl");
             var command = new FollowUserCommand(followedId);
 
             _userContextServiceMock.Setup(x => x.GetUserId()).Returns(1);

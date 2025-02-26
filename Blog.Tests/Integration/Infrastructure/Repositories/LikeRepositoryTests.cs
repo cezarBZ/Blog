@@ -23,7 +23,7 @@ namespace Blog.Tests.Integration.Infrastructure.Repositories
         {
             using (var context = new TestDbContext(_options))
             {
-                var user = new User(1, "John Dow", "email", "hash", true, "user", "path");
+                var user = new User(1, "John Dow", "email", "hash", true, UserRole.User, "path");
                 var postId = 1;
                 var like = new Like(postId, user.Id, LikeTargetType.Post);
 
@@ -60,8 +60,8 @@ namespace Blog.Tests.Integration.Infrastructure.Repositories
         {
             using (var context = new TestDbContext(_options))
             {
-                var user1 = new User(1, "John Dow", "email", "hash", true, "user", "path");
-                var user2 = new User(2, "Johnie Dow", "email", "hash", true, "user", "path");
+                var user1 = new User(1, "John Dow", "email", "hash", true, UserRole.User, "path");
+                var user2 = new User(2, "Johnie Dow", "email", "hash", true, UserRole.User, "path");
 
                 var likes = new List<Like>
                 {

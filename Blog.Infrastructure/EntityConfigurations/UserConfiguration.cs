@@ -50,6 +50,14 @@ namespace Blog.Infrastructure.EntityConfigurations
             builder.Property(p => p.ProfilePictureUrl)
                 .HasColumnType("nvarchar(max)");
 
+            builder.Property(l => l.Role)
+                   .IsRequired()
+                   .HasConversion(
+                       v => v.ToString(),
+                       v => (UserRole)Enum.Parse(typeof(UserRole), v)
+                   )
+                   .HasMaxLength(50);
+
             builder.HasMany(u => u.Comments)
                 .WithOne(c => c.User)
                 .HasForeignKey(c => c.UserId)

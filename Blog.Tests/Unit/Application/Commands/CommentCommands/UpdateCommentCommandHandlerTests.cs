@@ -24,7 +24,7 @@ namespace Blog.Tests.Unit.Application.Commands.CommentCommands
         {
             var commentId = 1;
             var postId = 2;
-            var user = new User("trabson", "trabson@example.com", "xxxxxxxx", true, "User", "");
+            var user = new User("trabson", "trabson@example.com", "xxxxxxxx", true, UserRole.User, "");
             var comment = new Comment("Conteúdo do Comentário", postId, user.Id);
             var content = "Comentário atualizado";
             var command = new UpdateCommentCommand { CommentId = commentId, Content = content };
@@ -48,7 +48,7 @@ namespace Blog.Tests.Unit.Application.Commands.CommentCommands
         public async Task Handle_CommentNotFound_ShouldReturnNotFound()
         {
             var commentId = 1;
-            var user = new User("trabson", "trabson@example.com", "xxxxxxxx", true, "User", "");
+            var user = new User("trabson", "trabson@example.com", "xxxxxxxx", true, UserRole.User, "");
             var content = "Comentário atualizado";
 
             var command = new UpdateCommentCommand { CommentId = commentId, Content = content };
@@ -71,7 +71,7 @@ namespace Blog.Tests.Unit.Application.Commands.CommentCommands
             var commentId = 1;
             var postId = 2;
             var userId = 766;
-            var user = new User("trabson", "trabson@example.com", "xxxxxxxx", true, "User", "");
+            var user = new User("trabson", "trabson@example.com", "xxxxxxxx", true, UserRole.User, "");
             var comment = new Comment("Conteúdo do Comentário", postId, userId);
             var content = "Comentário atualizado";
             var command = new UpdateCommentCommand { CommentId = commentId, Content = content };

@@ -21,9 +21,9 @@ namespace Blog.Tests.Unit.Application.Commands.UserCommands
         {
             var followerId = 1;
             var followedId = 2;
-            var follower = new User(followerId, "Username", "Email", "Password", true, "Role", "CoverImageUrl");
+            var follower = new User(followerId, "Username", "Email", "Password", true, UserRole.User, "CoverImageUrl");
 
-            var followed = new User(followedId, "Username", "Email", "Password", true, "Role", "CoverImageUrl");
+            var followed = new User(followedId, "Username", "Email", "Password", true, UserRole.User, "CoverImageUrl");
 
             follower.Follow(followed);
 
@@ -66,7 +66,7 @@ namespace Blog.Tests.Unit.Application.Commands.UserCommands
             var command = new UnfollowUserCommand(1);
 
             _userContextServiceMock.Setup(x => x.GetUserId()).Returns(1);
-            _userRepositoryMock.Setup(x => x.GetByIdWithFollowedAsync(It.IsAny<int>())).ReturnsAsync(new User(1, "Username", "Email", "Password", true, "Role", "CoverImageUrl"));
+            _userRepositoryMock.Setup(x => x.GetByIdWithFollowedAsync(It.IsAny<int>())).ReturnsAsync(new User(1, "Username", "Email", "Password", true, UserRole.User, "CoverImageUrl"));
             _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((User?)null);
 
             var handler = new UnfollowUserCommandHandler(_userRepositoryMock.Object, _userContextServiceMock.Object);

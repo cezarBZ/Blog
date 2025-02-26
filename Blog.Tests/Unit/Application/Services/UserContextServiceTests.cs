@@ -24,7 +24,7 @@ namespace Blog.Tests.Unit.Application.Services
         {
             // Arrange
             var userId = 1;
-            var user = new User(userId, "John Doe", "email", "senha", true, "User", "path");
+            var user = new User(userId, "John Doe", "email", "senha", true, UserRole.User, "path");
 
             var claims = new List<Claim>
             {

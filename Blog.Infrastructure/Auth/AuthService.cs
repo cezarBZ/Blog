@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Security.Cryptography;
+using Blog.Domain.AggregatesModel.UserAggregate;
 
 
 namespace Blog.Infrastructure.Auth
@@ -29,7 +30,7 @@ namespace Blog.Infrastructure.Auth
                 return builder.ToString();
             }
         }
-        public string GenerateJwtToken(string email, string role, int id)
+        public string GenerateJwtToken(string email, UserRole role, int id)
         {
             var issuer = _configuration["Jwt:Issuer"];
             var audience = _configuration["Jwt:Audience"];
@@ -39,7 +40,7 @@ namespace Blog.Infrastructure.Auth
             var claims = new List<Claim>()
             {
                 new Claim("userName", email),
-                new Claim(ClaimTypes.Role, role),
+                new Claim(ClaimTypes.Role, role.ToString()),
                 new Claim("userId", id.ToString())
             };
             var token = new JwtSecurityToken(

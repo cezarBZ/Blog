@@ -19,11 +19,11 @@ namespace Blog.Tests.Unit.Application.Commands.UserCommands
         [Fact]
         public async Task Handle_ShouldLoginUser_WhenUserIsLoggedIn()
         {
-            var user = new User(1, "Username", "Email", "Password", true, "Role", "CoverImageUrl");
+            var user = new User(1, "Username", "Email", "Password", true, UserRole.User, "CoverImageUrl");
             var command = new LoginUserCommand {Email = "Email", Password = "Password" };
 
             _authServiceMock.Setup(x => x.ComputeSha256Hash(It.IsAny<string>())).Returns("Password");
-            _authServiceMock.Setup(x => x.GenerateJwtToken(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns("Token");
+            _authServiceMock.Setup(x => x.GenerateJwtToken(It.IsAny<string>(), It.IsAny<UserRole>(), It.IsAny<int>())).Returns("Token");
             _userRepositoryMock.Setup(x => x.GetUserByEmailAndPasswordAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(user);
             _userRepositoryMock.Setup(x => x.Update(It.IsAny<User>())).Verifiable();
             _userRepositoryMock.Setup(x => x.UnitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);

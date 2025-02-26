@@ -29,7 +29,7 @@ namespace Blog.Tests.Unit.Application.Commands.UserCommands
                 Username = "Username",
                 Email = "Email",
                 Password = "Password",
-                Role = "Role",
+                Role = UserRole.User,
                 ProfilePicture = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("This is a dummy file")), 0, 0, "ProfilePicture", "ProfilePicture.jpg")
             };
 

@@ -3,7 +3,9 @@ using Blog.Application.Commands.UserCommands.Follow;
 using Blog.Application.Commands.UserCommands.LoginUser;
 using Blog.Application.Commands.UserCommands.Unfollow;
 using Blog.Application.Queries.UserQueries;
+using Blog.Domain.AggregatesModel.UserAggregate;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Controllers
@@ -30,15 +32,32 @@ namespace Blog.API.Controllers
             return Ok(loginUserViewModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromForm] CreateUserCommand command)
+        [HttpPost("/createUser")]
+        public async Task<IActionResult> CreateRegularUser([FromForm] CreateUserCommand command)
         {
+            command.Role = UserRole.User;
             var response = await _mediator.Send(command);
 
             if (!response.IsSuccess)
             {
                 return BadRequest(response.Message);
                 
+            }
+
+            return Ok(response.Message);
+        }
+
+        [HttpPost("/createAdmin")]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> CreateAdminUser([FromForm] CreateUserCommand command)
+        {
+            command.Role = UserRole.Admin;
+            var response = await _mediator.Send(command);
+
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response.Message);
+
             }
 
             return Ok(response.Message);
