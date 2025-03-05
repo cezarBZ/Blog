@@ -23,7 +23,7 @@ public class PostController : ControllerBase
     }
 
     [HttpGet]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> GetAll()
     {
         var cmd = await _mediator.Send(new GetAllPostsQuery());

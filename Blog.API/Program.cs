@@ -16,13 +16,21 @@ using Blog.Application.Services;
 using Blog.Domain.AggregatesModel.CommentAggregate;
 using Blog.Domain.AggregatesModel.LikeAggregate;
 
+// Add services to the container.
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var corsSettings = builder.Configuration.GetSection("CorsSettings").Get<CorsSettings>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(string.Join(",", corsSettings.AllowedOrigins)) 
+              .AllowAnyHeader()
+              .AllowAnyMethod(); 
+    });
+});
 
 builder.Services.AddControllers();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -94,7 +102,7 @@ builder.Services
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
+app.UseCors("AllowFrontend");
 app.UseSwagger();
 app.UseSwaggerUI();
 
