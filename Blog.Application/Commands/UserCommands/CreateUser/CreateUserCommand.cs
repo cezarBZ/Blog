@@ -6,14 +6,12 @@ using System.Text.Json.Serialization;
 
 namespace Blog.Application.Commands.UserCommands.CreateUser
 {
-    public class CreateUserCommand : IRequest<Response<int>>
+    public class CreateUserCommand : IRequest<Response<SignupResponse>>
     {
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         [JsonIgnore]
         public UserRole Role { get; set; }
-        public IFormFile ProfilePicture { get; set; }
-
     }
 }

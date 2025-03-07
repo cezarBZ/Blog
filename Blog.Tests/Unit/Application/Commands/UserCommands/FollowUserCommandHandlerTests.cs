@@ -23,9 +23,9 @@ namespace Blog.Tests.Unit.Application.Commands.UserCommands
         {
             var followerId = 1;
             var followedId = 2;
-            var follower = new User(followerId, "Username", "Email", "Password", true, UserRole.User, "CoverImageUrl");
+            var follower = new User(followerId, "Username", "Email", "Password", true, UserRole.User);
 
-            var followed = new User(followedId, "Username", "Email", "Password", true, UserRole.User, "CoverImageUrl");
+            var followed = new User(followedId, "Username", "Email", "Password", true, UserRole.User);
 
             var command = new FollowUserCommand(followedId);
 
@@ -50,7 +50,7 @@ namespace Blog.Tests.Unit.Application.Commands.UserCommands
             var command = new FollowUserCommand(1);
 
             _userContextServiceMock.Setup(x => x.GetUserId()).Returns(1);
-            _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((User)null);
+            _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((User?)null);
 
             var handler = new FollowUserCommandHandler(_userRepositoryMock.Object, _userContextServiceMock.Object);
             var result = await handler.Handle(command, CancellationToken.None);
@@ -65,7 +65,7 @@ namespace Blog.Tests.Unit.Application.Commands.UserCommands
         {
             var followerId = 1;
             var followedId = 2;
-            var follower = new User("Username", "Email", "Password", true, UserRole.User, "CoverImageUrl");
+            var follower = new User("Username", "Email", "Password", true, UserRole.User);
             var command = new FollowUserCommand(followedId);
 
             _userContextServiceMock.Setup(x => x.GetUserId()).Returns(1);

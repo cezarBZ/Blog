@@ -19,7 +19,7 @@ namespace Blog.Tests.Unit.Application.Commands.UserCommands
         [Fact]
         public async Task Handle_ShouldLoginUser_WhenUserIsLoggedIn()
         {
-            var user = new User(1, "Username", "Email", "Password", true, UserRole.User, "CoverImageUrl");
+            var user = new User(1, "Username", "Email", "Password", true, UserRole.User);
             var command = new LoginUserCommand {Email = "Email", Password = "Password" };
 
             _authServiceMock.Setup(x => x.ComputeSha256Hash(It.IsAny<string>())).Returns("Password");

@@ -16,9 +16,9 @@ namespace Blog.Tests.Unit.Application.Queries.UserQueries
         [Fact]
         public async Task Handle_ShouldReturnFollowers_WhenUsersExist()
         {
-            var userFollowed = new User("email", "username", "password", true, UserRole.User, "url");
-            var user1 = new User("email1", "username1", "password1", true, UserRole.User, "url");
-            var user2 = new User("email2", "username2", "password2", true, UserRole.User, "url");
+            var userFollowed = new User("email", "username", "password", true, UserRole.User);
+            var user1 = new User("email1", "username1", "password1", true, UserRole.User);
+            var user2 = new User("email2", "username2", "password2", true, UserRole.User);
             var followers = new List<User>
             {
                 user1, user2

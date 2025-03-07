@@ -21,7 +21,7 @@ namespace Blog.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPut("login")]
+        [HttpPut("signin")]
         public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
         {
             var loginUserViewModel = await _mediator.Send(command);
@@ -32,8 +32,8 @@ namespace Blog.API.Controllers
             return Ok(loginUserViewModel);
         }
 
-        [HttpPost("/createUser")]
-        public async Task<IActionResult> CreateRegularUser([FromForm] CreateUserCommand command)
+        [HttpPost("signup")]
+        public async Task<IActionResult> CreateRegularUser([FromBody] CreateUserCommand command)
         {
             command.Role = UserRole.User;
             var response = await _mediator.Send(command);
@@ -41,15 +41,15 @@ namespace Blog.API.Controllers
             if (!response.IsSuccess)
             {
                 return BadRequest(response.Message);
-                
+
             }
 
-            return Ok(response.Message);
+            return Ok(response);
         }
 
-        [HttpPost("/createAdmin")]
+        [HttpPost("createAdmin")]
         [Authorize(Policy = "AdminOnly")]
-        public async Task<IActionResult> CreateAdminUser([FromForm] CreateUserCommand command)
+        public async Task<IActionResult> CreateAdminUser([FromBody] CreateUserCommand command)
         {
             command.Role = UserRole.Admin;
             var response = await _mediator.Send(command);

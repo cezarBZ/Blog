@@ -22,7 +22,7 @@ namespace Blog.Tests.Integration.Infrastructure.Repositories
         {
             using (var context = new TestDbContext(_options))
             {
-                var user = new User(1, "Fulano", "test@example.com", "hashedpassword", true, UserRole.User, "path");
+                var user = new User(1, "Fulano", "test@example.com", "hashedpassword", true, UserRole.User);
 
                 await context.Users.AddAsync(user);
                 await context.SaveChangesAsync();
@@ -55,9 +55,9 @@ namespace Blog.Tests.Integration.Infrastructure.Repositories
         {
             using (var context = new TestDbContext(_options))
             {
-                var user1 = new User(1, "Fulano", "email1", "hash", true, UserRole.User, "path");
-                var user2 = new User(2, "Fulano", "email2", "hash", true, UserRole.User, "path");
-                var user3 = new User(3, "Fulano", "email3", "hash", true, UserRole.User, "path");
+                var user1 = new User(1, "Fulano", "email1", "hash", true, UserRole.User);
+                var user2 = new User(2, "Fulano", "email2", "hash", true, UserRole.User);
+                var user3 = new User(3, "Fulano", "email3", "hash", true, UserRole.User);
 
                 user1.Following.Add(new UserFollower(1, 2));
                 user1.Following.Add(new UserFollower(1, 3));
@@ -79,9 +79,9 @@ namespace Blog.Tests.Integration.Infrastructure.Repositories
         {
             using (var context = new TestDbContext(_options))
             {
-                var user1 = new User(1, "Fulano 1", "email1", "hash", true, UserRole.User, "path");
-                var user2 = new User(2, "Fulano 2", "email2", "hash", true, UserRole.User, "path");
-                var user3 = new User(3, "Fulano 3", "email3", "hash", true, UserRole.User, "path");
+                var user1 = new User(1, "Fulano 1", "email1", "hash", true, UserRole.User);
+                var user2 = new User(2, "Fulano 2", "email2", "hash", true, UserRole.User);
+                var user3 = new User(3, "Fulano 3", "email3", "hash", true, UserRole.User);
 
                 user1.Followers.Add(new UserFollower(2, 1));
                 user1.Followers.Add(new UserFollower(3, 1));
@@ -104,9 +104,9 @@ namespace Blog.Tests.Integration.Infrastructure.Repositories
             // Arrange
             using (var context = new TestDbContext(_options))
             {
-                var user1 = new User(1, "Fulano", "email1", "hash", true, UserRole.User, "path");
-                var user2 = new User(2, "Fulano", "email1", "hash", true, UserRole.User, "path");
-                var user3 = new User(3, "Fulano", "email1", "hash", true, UserRole.User, "path");
+                var user1 = new User(1, "Fulano", "email1", "hash", true, UserRole.User);
+                var user2 = new User(2, "Fulano", "email1", "hash", true, UserRole.User);
+                var user3 = new User(3, "Fulano", "email1", "hash", true, UserRole.User);
 
                 user1.Following.Add(new UserFollower(1, 2));
                 user1.Following.Add(new UserFollower(1, 3));

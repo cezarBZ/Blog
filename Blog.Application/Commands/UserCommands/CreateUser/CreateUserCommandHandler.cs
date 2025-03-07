@@ -6,42 +6,37 @@ using MediatR;
 
 namespace Blog.Application.Commands.UserCommands.CreateUser
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response<int>>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response<SignupResponse>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IAuthService _authService;
-        private readonly IFileStorageService fileStorageService;
 
-        public CreateUserCommandHandler(IUserRepository userRepository, IAuthService authService, IFileStorageService fileStorageService)
+        public CreateUserCommandHandler(IUserRepository userRepository, IAuthService authService)
         {
             _userRepository = userRepository;
             _authService = authService;
-            this.fileStorageService = fileStorageService;
         }
-        public async Task<Response<int>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Response<SignupResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 var passwordHash = _authService.ComputeSha256Hash(request.Password);
-                string coverImageUrl = null;
-                if (request.ProfilePicture != null)
-                {
-                    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(request.ProfilePicture.FileName)}";
-                    coverImageUrl = await fileStorageService.UploadFileAsync(request.ProfilePicture, fileName);
-                }
 
-                var user = new User(request.Username, request.Email, passwordHash, true, request.Role, coverImageUrl);
+
+                var user = new User(request.Username, request.Email, passwordHash, true, request.Role);
+                var token = _authService.GenerateJwtToken(user.Email, user.Role, user.Id);
 
                 await _userRepository.AddAsync(user);
                 await _userRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+                var response = new SignupResponse(user.Email, token, user.Username, user.Role.ToString());
 
-                return Response<int>.Success(user.Id, "Usuário criado com sucesso.");
+                return Response<SignupResponse>.Success(response, "Usuário criado com sucesso.");
 
             }
             catch (System.Exception error)
             {
 
-                return Response<int>.Failure(error.Message);
+                return Response<SignupResponse>.Failure(error.Message);
             }
         }
     }

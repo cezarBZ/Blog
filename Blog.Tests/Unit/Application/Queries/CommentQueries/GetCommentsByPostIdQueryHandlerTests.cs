@@ -19,8 +19,8 @@ namespace Blog.Tests.Unit.Application.Queries.CommentQueries
         public async Task Handle_ShouldReturnComments_WhenCommentsExist()
         {
             // Arrange
-            var user1 = new User(1, "User1", "user1@example.com", "hash", true, UserRole.User, "url");
-            var user2 = new User(2, "User2", "user2@example.com", "hash", true, UserRole.User, "url");
+            var user1 = new User(1, "User1", "user1@example.com", "hash", true, UserRole.User);
+            var user2 = new User(2, "User2", "user2@example.com", "hash", true, UserRole.User);
             var postId = 1;
             var comment1 = new Comment("Content 1", postId, 1);
             var comment2 = new Comment("Content 2", postId, 2);

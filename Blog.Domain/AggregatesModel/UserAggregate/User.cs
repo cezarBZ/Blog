@@ -7,7 +7,7 @@ namespace Blog.Domain.AggregatesModel.UserAggregate;
 
 public class User : Entity<int>, IAggregateRoot
 {
-    public User(string username, string email, string passwordHash, bool active, UserRole role, string profilePictureUrl)
+    public User(string username, string email, string passwordHash, bool active, UserRole role)
     {
         Username = username;
         Email = email;
@@ -17,11 +17,10 @@ public class User : Entity<int>, IAggregateRoot
         Role = role;
         FollowersCount = 0;
         FollowingCount = 0;
-        ProfilePictureUrl = profilePictureUrl;
     }
     // Novo construtor para testes
-    public User(int id, string username, string email, string passwordHash, bool active, UserRole role, string profilePictureUrl)
-        : this(username, email, passwordHash, active, role, profilePictureUrl)
+    public User(int id, string username, string email, string passwordHash, bool active, UserRole role)
+        : this(username, email, passwordHash, active, role)
     {
         Id = id; // Define o Id diretamente
     }

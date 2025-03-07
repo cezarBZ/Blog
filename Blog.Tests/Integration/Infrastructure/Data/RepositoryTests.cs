@@ -24,7 +24,7 @@ namespace Blog.Tests.Integration.Infrastructure.Data
             using (var context = new TestDbContext(_options))
             {
                 var repository = new Repository<User, int>(context);
-                var user = new User(1, "John Doe", "email", "senha", true, UserRole.User, "path");
+                var user = new User(1, "John Doe", "email", "senha", true, UserRole.User);
 
                 await repository.AddAsync(user);
                 await context.SaveChangesAsync();
@@ -41,7 +41,7 @@ namespace Blog.Tests.Integration.Infrastructure.Data
             using (var context = new TestDbContext(_options))
             {
                 var repository = new Repository<User, int>(context);
-                var user = new User(1, "John Doe", "email", "senha", true, UserRole.User, "path");
+                var user = new User(1, "John Doe", "email", "senha", true, UserRole.User);
                 await repository.AddAsync(user);
                 await context.SaveChangesAsync();
 
@@ -58,7 +58,7 @@ namespace Blog.Tests.Integration.Infrastructure.Data
             using (var context = new TestDbContext(_options))
             {
                 var repository = new Repository<User, int>(context);
-                var user = new User(1, "John Doe", "email", "senha", true, UserRole.User, "path");
+                var user = new User(1, "John Doe", "email", "senha", true, UserRole.User);
                 await repository.AddAsync(user);
                 await context.SaveChangesAsync();
 
@@ -101,7 +101,7 @@ namespace Blog.Tests.Integration.Infrastructure.Data
             using (var context = new TestDbContext(_options))
             {
                 var repository = new Repository<User, int>(context);
-                var user = new User(1, "John Doe", "email", "senha", true, UserRole.User, "path");
+                var user = new User(1, "John Doe", "email", "senha", true, UserRole.User);
                 await repository.AddAsync(user);
                 await context.SaveChangesAsync();
 
@@ -121,7 +121,7 @@ namespace Blog.Tests.Integration.Infrastructure.Data
             using (var context = new TestDbContext(_options))
             {
                 var repository = new Repository<User, int>(context);
-                var user = new User(1, "John Doe", "email", "senha", true, UserRole.User, "path");
+                var user = new User(1, "John Doe", "email", "senha", true, UserRole.User);
                 await repository.AddAsync(user);
                 await context.SaveChangesAsync();
 
@@ -139,8 +139,8 @@ namespace Blog.Tests.Integration.Infrastructure.Data
             using (var context = new TestDbContext(_options))
             {
                 var repository = new Repository<User, int>(context);
-                await repository.AddAsync(new User(1, "John Doe", "email", "senha", true, UserRole.User, "path"));
-                await repository.AddAsync(new User(2, "Jane Doe", "email", "senha", true, UserRole.User, "path"));
+                await repository.AddAsync(new User(1, "John Doe", "email", "senha", true, UserRole.User));
+                await repository.AddAsync(new User(2, "Jane Doe", "email", "senha", true, UserRole.User));
                 await context.SaveChangesAsync();
 
                 var result = await repository.GetAllAsync();

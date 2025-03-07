@@ -25,7 +25,7 @@ namespace Blog.Tests.Integration.Infrastructure.Repositories
             using (var context = new TestDbContext(_options))
             {
                 var post = new Post(1, "Title", "Content", "path", 1);
-                var user = new User(1, "Cézar", "email", "hash", true, UserRole.User, "path");
+                var user = new User(1, "Cézar", "email", "hash", true, UserRole.User);
 
                 var comments = new List<Comment>
                 {
