@@ -1,5 +1,6 @@
 ﻿using Blog.Application.Queries.PostQueries.GetAllPosts;
 using Blog.Domain.AggregatesModel.PostAggregate;
+using Blog.Domain.AggregatesModel.UserAggregate;
 using Moq;
 
 namespace Blog.Tests.Unit.Application.Queries.PostQueries
@@ -17,7 +18,10 @@ namespace Blog.Tests.Unit.Application.Queries.PostQueries
         public async Task Handle_ShouldReturnPosts_WhenPostsExist()
         {
             var post1 = new Post("Title 1", "Content 1", "url", 1);
-            var post2 = new Post("Title 2", "Content 2", "url", 2);
+            var user = new User(1, "username", "email", "password", true, UserRole.User);
+            var post2 = new Post("Title 2", "Content 2", "url", 1);
+            post1.User = user;
+            post2.User = user;
             var posts = new List<Post>
             {
                 post1, post2

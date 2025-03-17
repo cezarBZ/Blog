@@ -1,5 +1,6 @@
 ﻿using Blog.Domain.AggregatesModel.CommentAggregate;
 using Blog.Domain.AggregatesModel.LikeAggregate;
+using Blog.Domain.AggregatesModel.UserAggregate;
 using Blog.Domain.Core.Models;
 
 namespace Blog.Domain.AggregatesModel.PostAggregate;
@@ -39,6 +40,7 @@ public class Post : Entity<int>, IAggregateRoot
     public int CommentCount { get; private set; }
 
     public int CreatedBy { get; private set; }
+    public User User { get;  set; }
     public void Edit(string newTitle, string newContent, string newCoverImageUrl)
     {
         Content = newContent;

@@ -37,7 +37,6 @@ public class User : Entity<int>, IAggregateRoot
     public string ProfilePictureUrl { get; private set; }
 
     public ICollection<Like> Likes { get; set; } = new List<Like>();
-    public ICollection<Post> Posts { get; set; } = new List<Post>();
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     public ICollection<UserFollower> Followers { get; set; } = new List<UserFollower>();
     public ICollection<UserFollower> Following { get; set; } = new List<UserFollower>();

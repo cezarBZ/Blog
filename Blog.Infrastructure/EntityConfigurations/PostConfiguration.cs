@@ -1,4 +1,5 @@
 ﻿using Blog.Domain.AggregatesModel.PostAggregate;
+using Blog.Domain.AggregatesModel.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -31,6 +32,13 @@ namespace Blog.Infrastructure.EntityConfigurations
             builder.Property(p => p.UpdatedAt)
                 .HasColumnType("datetime")
                 .IsRequired(false);
+
+            builder.HasOne(a => a.User)
+               .WithMany()
+               .IsRequired()
+               .HasForeignKey(_ => _.CreatedBy)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasConstraintName("FK_Post_User");
 
             builder.Property(p => p.CoverImageUrl)
                 .HasColumnType("nvarchar(max)");

@@ -1,5 +1,6 @@
 ﻿using Blog.Domain.AggregatesModel.CommentAggregate;
 using Blog.Domain.AggregatesModel.PostAggregate;
+using Blog.Domain.AggregatesModel.UserAggregate;
 using Blog.Infrastructure.Data;
 using Blog.Infrastructure.Repositories;
 using Blog.Tests.Integration.Infrastructure.Data;
@@ -23,7 +24,9 @@ namespace Blog.Tests.Integration.Infrastructure.Repositories
         {
             using (var context = new TestDbContext(_options))
             {
+                var user = new User(1, "username", "email", "password", true, UserRole.User);
                 var post = new Post(1, "Test Post", "conteúdo", "path", 1);
+                post.User = user;
                 var comments = new List<Comment>
                 {
                     new Comment("conteúdo", post.Id, 2),

@@ -23,7 +23,7 @@ namespace Blog.Infrastructure.Data
                 return orderBy(query).AsNoTracking().ToList();
             return query.AsNoTracking().ToList();
         }
-        public async Task<IReadOnlyList<T>> GetAllAsync(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
+        public virtual async Task<IReadOnlyList<T>> GetAllAsync(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
         {
             var query = _context.Set<T>();
             if (orderBy != null)

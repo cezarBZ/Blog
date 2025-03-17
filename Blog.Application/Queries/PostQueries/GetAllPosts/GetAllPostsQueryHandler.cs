@@ -21,10 +21,10 @@ namespace Blog.Application.Queries.PostQueries.GetAllPosts
             {
                 return Response<IReadOnlyList<PostResponse>>.NotFound("No posts found");
             }
-
-            var result = posts.Select(p => new PostResponse { Id = p.Id, Title = p.Title, Content = p.Content, CoverImageUrl = p.CoverImageUrl, CreatedAt = p.CreatedAt, UpdatedAt = p.UpdatedAt, CommentCount = p.CommentCount, LikeCount = p.LikeCount }).ToList();
+            var result = posts.Select(p => new PostResponse { Id = p.Id, Title = p.Title, Content = p.Content, CoverImageUrl = p.CoverImageUrl, CreatedAt = p.CreatedAt, UpdatedAt = p.UpdatedAt, CommentCount = p.CommentCount, LikeCount = p.LikeCount, User = new UserResponse { Email = p.User.Email, Id = p.User.Id, ProfilePictureUrl = p.User.ProfilePictureUrl, Username = p.User.Username } }).ToList();
 
             return Response<IReadOnlyList<PostResponse>>.Success(result);
+
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Blog.Application.Queries.PostQueries.GetPostById
 
             var comments = post.Comments.Select(c => new CommentsResponse { Id = c.Id, Content = c.Content, CreatedAt = c.CreatedAt, UpdatedAt = c.UpdatedAt, UserId = c.UserId }).ToList();
 
-            var postViewModel = new PostResponse { Id = post.Id, Title = post.Title, Content = post.Content, CoverImageUrl = post.CoverImageUrl, CreatedAt = post.CreatedAt, UpdatedAt = post.UpdatedAt, Comments = comments, CommentCount = post.CommentCount, LikeCount = post.LikeCount };
+            var postViewModel = new PostResponse { Id = post.Id, Title = post.Title, Content = post.Content, CoverImageUrl = post.CoverImageUrl, CreatedAt = post.CreatedAt, UpdatedAt = post.UpdatedAt, Comments = comments, CommentCount = post.CommentCount, LikeCount = post.LikeCount, User = new UserResponse { Email = post.User.Email, Id = post.User.Id, ProfilePictureUrl = post.User.ProfilePictureUrl, Username = post.User.Username } };
 
             return Response<PostResponse>.Success(postViewModel);
         }

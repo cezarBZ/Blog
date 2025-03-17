@@ -42,7 +42,7 @@ namespace Blog.Tests.Unit.Application.Commands.UserCommands
             var command = new LoginUserCommand { Email = "Email", Password = "Password" };
 
             _authServiceMock.Setup(x => x.ComputeSha256Hash(It.IsAny<string>())).Returns("Password");
-            _userRepositoryMock.Setup(x => x.GetUserByEmailAndPasswordAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((User)null);
+            _userRepositoryMock.Setup(x => x.GetUserByEmailAndPasswordAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((User?)null);
 
             var handler = new LoginUserCommandHandler(_authServiceMock.Object, _userRepositoryMock.Object);
             var result = await handler.Handle(command, CancellationToken.None);
