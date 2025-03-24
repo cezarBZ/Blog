@@ -53,7 +53,7 @@ builder.Services.Configure<AzureBlobStorageOptions>(
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevFreela.API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blog.API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
